@@ -1,0 +1,40 @@
+name: FamilyNames
+description: 
+author: insanj
+website: https://github.com/insanj/FamilyNames
+main: me.insanj.familynames.FamilyNamesPlugin
+version: 0.1.0
+commands:
+  family remove:
+    description: Removes a family from config
+    usage: |
+             /family remove <family_name>
+  family set:
+    description: Sets a players family name
+    usage: |
+             /family set <player> <family_name>
+  family add:
+    description: Adds a family to config
+    usage: |
+             /family add <family_name>
+  family removep:
+    description: Removes a player from a family so they don't have one unless it is set this means they won’t have a suffix and it is removed so they only have their standard Minecraft username
+    usage: |
+             /family removep <player>
+  family fset:
+    description: Sets first and last name
+    usage: |
+             /family fset <player> <first_name> <surname>
+permissions:
+  family.set:
+    description: Run /family set command
+  family.remove:
+    description: Run /family removep command
+  family.add:
+    description: Run /family add command
+  family.removep:
+    description: Run /family removep command
+  family.all:
+    description: Run all /family commands
+  family.fset:
+    description: Run /family fset command
