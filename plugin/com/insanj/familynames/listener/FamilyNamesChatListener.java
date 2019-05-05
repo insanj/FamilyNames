@@ -1,4 +1,4 @@
-package me.insanj.familynames;
+package com.insanj.familynames.listener;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -30,6 +30,7 @@ import net.minecraft.server.v1_13_R2.PlayerConnection;
 public class FamilyNamesChatListener implements Listener {
     public final Hover plugin;
     public boolean disabled;
+
     public FamilyNamesChatListener(Hover plugin) {
         this.plugin = plugin;
         this.disabled = false;

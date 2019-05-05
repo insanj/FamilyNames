@@ -1,4 +1,4 @@
-package me.insanj.familynames;
+package com.insanj.familynames.util;
 
 import java.util.Map;
 import java.util.HashMap;

@@ -1,4 +1,8 @@
-package me.insanj.familynames;
+package com.insanj.familynames;
+
+import com.insanj.familynames.command.*;
+import com.insanj.familynames.listener.*;
+import com.insanj.familynames.util.*;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -14,20 +18,29 @@ import org.bukkit.plugin.PluginManager;
 
 public class FamilyNamesPlugin extends JavaPlugin {
     public FamilyNamesConfig config;
-    private FamilyNamesChatListener listener;
+    public FamilyNamesChatComposer composer;
+
+    private FamilyNamesChatListener chatListener;
+    private FamilyNamesLoginListener loginListener;
     private FamilyNamesCommandExecutor executor;
-    private FamilyNamesMessageComposer composer;
 
     @Override
     public void onEnable() {
+        // utils
         config = new FamilyNamesConfig(this);
+        config.reload();
 
+        composer = new FamilyNamesChatComposer(this);
+
+        // commands
         executor = new FamilyNamesCommandExecutor(this);
         getCommand("family").setExecutor(executor);
 
-        composer = new FamilyNamesMessageComposer(this);
+        // listeners (for player connections, chat messages)
+        chatListener = new FamilyNamesChatListener(this);
+        Bukkit.getServer().getPluginManager().registerEvents(chatListener, this); 
 
-        listener = new FamilyNamesChatListener(this);
-        Bukkit.getServer().getPluginManager().registerEvents(listener, this); 
+        loginListener = new FamilyNamesLoginListener(this);
+        Bukkit.getServer().getPluginManager().registerEvents(loginListener, this); 
     }
 }

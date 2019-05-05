@@ -11,32 +11,35 @@ debug: true
 tooltips: true
 
 # list of first names to use when creating a new Family Name for a player
-first_names:
-    - Harry
-    - Henry
-    - Albert
-    - Cederic
-    - Adam
-    - Oliver
-    - Dominic
-    - Elizabeth
-    - Lucy
-    - Hermione
-
 # list of surnames to use when creating a new Family Name for a player
-surnames:
-    - Potter &7[&8Potter&7]&f
-    - Granger &7[&8Granger&7]&f
-    - Weasley &7[&8Weasley&7]&f
-    - Malfoy &7[&8Malfoy&7]&f
-    - Diggory &7[&8Diggory&7]&f
-    - Patil &7[&8Patil&7]&f
-    - Longbottom &7[&8Longbottom&7]&f
+family_names:
+    first_names:
+        male:
+            - Harry
+            - Henry
+            - Albert
+            - Cederic
+            - Adam
+            - Oliver
+            - Dominic
+        female:
+            - Elizabeth
+            - Lucy
+            - Hermione
+    surnames:
+        - Potter &7[&8Potter&7]&f
+        - Granger &7[&8Granger&7]&f
+        - Weasley &7[&8Weasley&7]&f
+        - Malfoy &7[&8Malfoy&7]&f
+        - Diggory &7[&8Diggory&7]&f
+        - Patil &7[&8Patil&7]&f
+        - Longbottom &7[&8Longbottom&7]&f
 
 # list of all current Family Names for players, including optional tooltip when hovering over name
 players:
     insanj:
+        gender: male
         first_name: Harry
-        last_name: Potter
+        surname: Potter
         tooltip:
             - Username: insanj

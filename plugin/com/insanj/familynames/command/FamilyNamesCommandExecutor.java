@@ -1,4 +1,6 @@
-package me.insanj.familynames;
+package com.insanj.familynames.command;
+
+import com.insanj.familynames.FamilyNamesPlugin;
 
 import java.util.ArrayList;
 import java.util.HashMap;
