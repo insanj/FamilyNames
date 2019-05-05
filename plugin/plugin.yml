@@ -1,8 +1,8 @@
 name: FamilyNames
-description: 
+description: automatically give players nicknames for role-playing (bukkit 1.13.2)
 author: insanj
 website: https://github.com/insanj/FamilyNames
-main: me.insanj.familynames.FamilyNamesPlugin
+main: com.insanj.familynames.FamilyNamesPlugin
 version: 0.1.0
 commands:
   family remove:
@@ -28,13 +28,19 @@ commands:
 permissions:
   family.set:
     description: Run /family set command
+    default: op
   family.remove:
-    description: Run /family removep command
+    description: Run /family remove command
+    default: op
   family.add:
     description: Run /family add command
+    default: op
   family.removep:
     description: Run /family removep command
+    default: op
   family.all:
     description: Run all /family commands
+    default: op
   family.fset:
     description: Run /family fset command
+    default: op

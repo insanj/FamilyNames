@@ -1,4 +1,16 @@
+# FamilyNames config YML
+# v0.1.0
 
+# enables all functionality of the plugin (in case something goes wrong...)
+enabled: true
+
+# enables debug messages in the system log
+debug: true 
+
+# enables tooltips on usernames when sending a message (default: shows original username on hover)
+tooltips: true
+
+# list of first names to use when creating a new Family Name for a player
 first_names:
     - Harry
     - Henry
@@ -11,6 +23,7 @@ first_names:
     - Lucy
     - Hermione
 
+# list of surnames to use when creating a new Family Name for a player
 surnames:
     - Potter &7[&8Potter&7]&f
     - Granger &7[&8Granger&7]&f
@@ -20,7 +33,10 @@ surnames:
     - Patil &7[&8Patil&7]&f
     - Longbottom &7[&8Longbottom&7]&f
 
+# list of all current Family Names for players, including optional tooltip when hovering over name
 players:
     insanj:
         first_name: Harry
         last_name: Potter
+        tooltip:
+            - Username: insanj
