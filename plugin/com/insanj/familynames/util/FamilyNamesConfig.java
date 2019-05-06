@@ -72,6 +72,36 @@ public class FamilyNamesConfig {
 
 
 /*
+    public String getPlayerNameString(Player player) { // override this to customize player name format
+        return "<" + player.getName() + "> ";
+    }
+
+    public Map<String, Object> getTooltipStringsForPlayer(Player player) {
+        ConfigurationSection configSection = this.plugin.getConfig().getConfigurationSection(player.getName());
+        if (configSection == null) {
+            return null; // nothing configured for player
+        }
+
+        Map<String, Object> tooltipStrings = (Map<String, Object>)configSection.getValues(false);
+        if (tooltipStrings == null || tooltipStrings.size() <= 0) {
+            return null;
+        }
+
+        return tooltipStrings;
+    }
+    
+    public String getHoverTextForPlayer(Player player) {
+        Map<String, Object> tooltipStrings = getTooltipStringsForPlayer(player);
+        String hoverText = "";
+        for (String tooltipKey : tooltipStrings.keySet()) {
+            String tooltipContents = (String)tooltipStrings.get(tooltipKey);
+            hoverText += tooltipKey + ": " + tooltipContents + "\n";
+        }
+        return hoverText.trim();
+    }
+
+
+
     private HashMap loadConfigWorldsFromDisk() {
         // first load from disk
         ConfigurationSection unparsedWorldsSection = plugin.getConfig().getConfigurationSection(PRIDE_WORLDS_PATH);

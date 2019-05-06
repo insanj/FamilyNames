@@ -18,16 +18,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 
 public class FamilyNamesCommandExecutor implements CommandExecutor {
-    public final String HOVER_PERMISSION_ADD_CMD = "add";
-    public final String HOVER_PERMISSION_START_CMD = "start";
-    public final String HOVER_PERMISSION_STOP_CMD = "stop";
-    public final String HOVER_PERMISSION_RELOAD_CMD = "reload";
-
+    private final FamilyNamesPlugin plugin;
     private final String ERROR_NO_PERM = ChatColor.RED + "You do not have the required permission to run this Hover command.";
 
-    public final Hover plugin;
-
-    public HoverCommandExecutor(Hover plugin) {
+    public FamilyNamesCommandExecutor(Hover plugin) {
         this.plugin = plugin;
     }
 
@@ -38,80 +32,76 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
 
         if (args.length != 1) {
             return false;
-        } else if (senderHasPermission(sender, args[0]) == false) {
-            sender.sendMessage(ERROR_NO_PERMISSIONS);
-            return true;
         }
-        
-        if (args[0].equalsIgnoreCase(HOVER_PERMISSION_ADD_CMD)) {
-            Player player = (Player)sender;
-            
-            HashMap defaultContents = new HashMap();
-            defaultContents.put("Name", player.getName());
-            plugin.getConfig().createSection(player.getName(), defaultContents);
-            plugin.saveConfig();
 
-            sender.sendMessage(ChatColor.LIGHT_PURPLE + "Wrote default config for " + player.getName() + "!");
-            return true;
-        } else if (args[0].equalsIgnoreCase(HOVER_PERMISSION_RELOAD_CMD)) {
-            plugin.reloadConfig();
-            sender.sendMessage(ChatColor.LIGHT_PURPLE + "Hover reloaded!");
-            return true;
-        } else if (args[0].equalsIgnoreCase(HOVER_PERMISSION_START_CMD)) {
-            if (plugin.listener.disabled == false) {
-                sender.sendMessage(ChatColor.RED + "Hover is already enabled.");
-                return true;
-            }
+        String familyCommand = args[0];
 
-            plugin.listener.disabled = false;
-            Bukkit.getServer().getPluginManager().registerEvents(plugin.listener, plugin); 
-            sender.sendMessage(ChatColor.LIGHT_PURPLE + "Hover re-enabled!");
-            return true;
-        } else if (args[0].equalsIgnoreCase(HOVER_PERMISSION_STOP_CMD)) {
-            if (plugin.listener.disabled == true) {
-                sender.sendMessage(ChatColor.RED + "Hover is already disabled.");
-                return true;
-            }
-
-            plugin.listener.disabled = true;
-            HandlerList.unregisterAll(plugin.listener);
-            sender.sendMessage(ChatColor.LIGHT_PURPLE + "Hover disabled!");
+        else if (FamilyNamesPermissions.senderHasPermission(sender, familyCommand) == false) {
+            sender.sendMessage(ERROR_NO_PERM);
             return true;
         }
 
-        return false;
+        switch (FamilyNamesPermissions.permissionTypeFromString(familyCommand)) {
+            case SET:
+                return onFamilySetCommand(sender, args);
+            case REMOVE:
+                return onFamilyRemoveCommand(sender, args);
+            case ADD:
+                return onFamilyAddCommand(sender, args);
+            case REMOVEP:
+                return onFamilyRemovePCommand(sender, args);
+            case FSET:
+                return onFamilyFSetCommand(sender, args);
+            default:
+            case ALL:
+            case UNKNOWN:
+                return false;
+        }
     }
 
-//   family.all:
-
-    private boolean onFamilyRemoveCommand() {
+    private boolean onFamilyRemoveCommand(CommandSender sender, String[] args) {
         //   family.remove:
         //             /family remove <family_name>
     }
 
-    private boolean onFamilySetCommand() {
+    private boolean onFamilySetCommand(CommandSender sender, String[] args) {
         //  family.set:
         //              /family set <player> <family_name>
     }
 
 
-    private boolean onFamilyAddCommand() {
+    private boolean onFamilyAddCommand(CommandSender sender, String[] args) {
         //   family.add:
 
         //             /family add <family_name>
+
+        Player player = (Player)sender;
+        HashMap defaultContents = new HashMap();
+        defaultContents.put("Name", player.getName());
+        plugin.getConfig().createSection(player.getName(), defaultContents);
+        plugin.saveConfig();
+
+        sender.sendMessage(ChatColor.LIGHT_PURPLE + "Wrote default config for " + player.getName() + "!");
+        return true;
     }
 
 
-    private boolean onFamilyRemovePCommand() {
+    private boolean onFamilyRemovePCommand(CommandSender sender, String[] args) {
         //  family.removep:
         //             /family removep <player>
 
     }
 
 
-    private boolean onFamilyFSetCommand() {
+    private boolean onFamilyFSetCommand(CommandSender sender, String[] args) {
         //   family.fset:
         //             /family fset <player> <first_name> <surname>
+    }
+
+    private boolean onFamilyReloadCommand(CommandSender sender, String[] args) {
+        plugin.reloadConfig();
+        sender.sendMessage(ChatColor.LIGHT_PURPLE + "Hover reloaded!");
+        return true;
     }
 
 }

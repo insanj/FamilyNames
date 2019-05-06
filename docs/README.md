@@ -3,7 +3,7 @@
 <br/>
 FamilyNames
 <br/>
- automatically give players nicknames for role-playing (bukkit 1.13.2)
+ simple rpg nicknames (bukkit 1.13.2)
 </h3>
 
 <p align="center">
@@ -33,6 +33,9 @@ FamilyNames
     <img src="https://img.shields.io/badge/bukkit-1.13.2-purple.svg" />
   </a>
 
+  <a href="https://github.com/insanj/familynames/releases">
+    <img src="https://img.shields.io/badge/🚀-Download%20on%20Github-red.svg" />
+  </a>
 </p>
 
 <br/>

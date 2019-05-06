@@ -41,13 +41,14 @@ public class FamilyNamesChatListener implements Listener {
         }
 
         Player player = event.getPlayer();
-        if (plugin.composer.getTooltipStringsForPlayer(player) == null) {
+        Map entry = plugin.config.getPlayerEntry(player);
+        if (entry == null) {
             return; // nothing configured
         }
-
+        
         String msg = event.getMessage();
         for (Player recipient : event.getRecipients​()) {
-            plugin.composer.sendMessage(player, recipient, msg);
+            plugin.composer.sendMessage(String.format("%s_%s", entry.get("first_name"), entry.get("surname")), recipient, msg, entry.get("tooltip"));
         }
 
         event.setCancelled(true);

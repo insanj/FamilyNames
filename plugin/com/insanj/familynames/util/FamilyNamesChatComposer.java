@@ -27,50 +27,14 @@ import net.minecraft.server.v1_13_R2.PacketPlayOutChat;
 import net.minecraft.server.v1_13_R2.PlayerConnection;
 
 public class FamilyNamesChatComposer {
-    public final FamilyNamesPlugin plugin;
-
-    public FamilyNamesChatComposer(FamilyNamesPlugin plugin) {
-        this.plugin = plugin;
+    public void sendMessage(String senderName, Player recipient, String message, String hoverText) {
+        String jsonMessage = composeMessage(senderName, message, hoverText);
+        sendJsonMessage(recipient, jsonMessage);
     }
 
-    public void sendMessage(Player sender, Player player, String message) {
-        String jsonMessage = composeMessage(sender, player, message);
-        sendJsonMessage(player, jsonMessage);
-    }
-
-    public String composeMessage(Player sender, Player player, String message) {
-        String hoverText = getHoverTextForPlayer(sender);
-        String playerName = getPlayerNameString(sender);
+    public String composeMessage(String playerName, String message, String hoverText) {
         String jsonString = "[\"\", {\"text\":\"" + playerName + "\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"" + hoverText + "\"}}, {\"text\":\"" + message + "\"}]";
         return jsonString;
-    }
-
-    public String getPlayerNameString(Player player) { // override this to customize player name format
-        return "<" + player.getName() + "> ";
-    }
-
-    public Map<String, Object> getTooltipStringsForPlayer(Player player) {
-        ConfigurationSection configSection = this.plugin.getConfig().getConfigurationSection(player.getName());
-        if (configSection == null) {
-            return null; // nothing configured for player
-        }
-
-        Map<String, Object> tooltipStrings = (Map<String, Object>)configSection.getValues(false);
-        if (tooltipStrings == null || tooltipStrings.size() <= 0) {
-            return null;
-        }
-
-        return tooltipStrings;
-    }
-
-    public String getHoverTextForPlayer(Player player) {
-        Map<String, Object> tooltipStrings = getTooltipStringsForPlayer(player);
-        String hoverText = "";
-        for (String tooltipKey : tooltipStrings.keySet()) {
-            String tooltipContents = (String)tooltipStrings.get(tooltipKey);
-            hoverText += tooltipKey + ": " + tooltipContents + "\n";
-        }
-        return hoverText.trim();
     }
 
     public static void sendJsonMessage(Player p, String s) {

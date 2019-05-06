@@ -15,12 +15,12 @@ import org.bukkit.World;
 import org.bukkit.Location;
 
 public class FamilyNamesPermissions {
-    public static final String FAMILY_SET_KEY = "family.set";
-    public static final String FAMILY_REMOVE_KEY = "family.remove";
-    public static final String FAMILY_ADD_KEY = "family.add";
-    public static final String FAMILY_REMOVEP_KEY = "family.removep";
-    public static final String FAMILY_ALL_KEY = "family.all";
-    public static final String FAMILY_FSET_KEY = "family.fset";
+    public static final String FAMILY_SET_KEY = "set";
+    public static final String FAMILY_REMOVE_KEY = "remove";
+    public static final String FAMILY_ADD_KEY = "add";
+    public static final String FAMILY_REMOVEP_KEY = "removep";
+    public static final String FAMILY_ALL_KEY = "all";
+    public static final String FAMILY_FSET_KEY = "fset";
 
     public enum PermissionType {
         SET,
@@ -66,15 +66,15 @@ public class FamilyNamesPermissions {
         PermissionType type = permissionTypeFromString(arg);
         switch (type) {
             case SET:
-                return sender.hasPermission(FAMILY_SET_KEY) == true;
+                return sender.hasPermission(String.format("family.%s",FAMILY_SET_KEY)) == true;
             case REMOVE:
-                return sender.hasPermission(FAMILY_REMOVE_KEY) == true;
+                return sender.hasPermission(String.format("family.%s",FAMILY_REMOVE_KEY)) == true;
             case ADD:
-                return sender.hasPermission(FAMILY_ADD_KEY) == true;
+                return sender.hasPermission(String.format("family.%s",FAMILY_ADD_KEY)) == true;
             case REMOVEP:
-                return sender.hasPermission(FAMILY_REMOVEP_KEY) == true;
+                return sender.hasPermission(String.format("family.%s",FAMILY_REMOVEP_KEY)) == true;
             case FSET:
-                return sender.hasPermission(FAMILY_FSET_KEY) == true;
+                return sender.hasPermission(String.format("family.%s",FAMILY_FSET_KEY)) == true;
             case ALL:
                 return true;
             default:

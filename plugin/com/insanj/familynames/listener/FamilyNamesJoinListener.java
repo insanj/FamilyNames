@@ -39,6 +39,7 @@ public class FamilyNamesJoinListener implements Listener {
             return; // player already setup
         }
 
+        plugin.composer.sendMessage("[FamilyNames]", player, "Welcome! Set up your name by clicking: [Male] or [Female]", "TODO");
 
         //String msg = event.getMessage();
       //  for (Player recipient : event.getRecipients​()) {

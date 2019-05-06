@@ -1,5 +1,5 @@
 name: FamilyNames
-description: automatically give players nicknames for role-playing (bukkit 1.13.2)
+description: simple rpg nicknames (bukkit 1.13.2)
 author: insanj
 website: https://github.com/insanj/FamilyNames
 main: com.insanj.familynames.FamilyNamesPlugin
