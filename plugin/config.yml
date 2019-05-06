@@ -8,12 +8,12 @@ enabled: true
 debug: true 
 
 # enables tooltips on usernames when sending a message (default: shows original username on hover)
-tooltips: true
+tooltip: true
 
 # list of first names to use when creating a new Family Name for a player
 # list of surnames to use when creating a new Family Name for a player
-family_names:
-    first_names:
+family_name:
+    first_name:
         male:
             - Harry
             - Henry
@@ -26,7 +26,7 @@ family_names:
             - Elizabeth
             - Lucy
             - Hermione
-    surnames:
+    surname:
         - Potter &7[&8Potter&7]&f
         - Granger &7[&8Granger&7]&f
         - Weasley &7[&8Weasley&7]&f
@@ -36,7 +36,7 @@ family_names:
         - Longbottom &7[&8Longbottom&7]&f
 
 # list of all current Family Names for players, including optional tooltip when hovering over name
-players:
+player:
     insanj:
         gender: male
         first_name: Harry

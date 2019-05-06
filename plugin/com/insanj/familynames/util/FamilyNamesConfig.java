@@ -19,34 +19,59 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class FamilyNamesConfig {
     // const keys
-    public final String PRIDE_INITIALIZED_KEY = "initialized";
-    public final String PRIDE_DISTANCE_KEY = "distance";
-    public final String PRIDE_WORLDS_PATH = "worlds";
-    
-    // private vars & constructor (use getters to get values from outside)
-    private double distance;
-    private HashMap worlds;
-    
-    private Pride plugin;
+    static final String ENABLED_KEY = "enabled";
+    static final String DEBUG_KEY = "debug";
+    static final String TOOLTIP_KEY = "tooltip";
+    static final String FAMILY_NAMES_KEY = "family_name";
+    static final String FIRST_NAMES_KEY = "first_name";
+    static final String MALE_KEY = "male";
+    static final String FEMALE_KEY = "female";
+    static final String SURNAMES_KEY = "surname";
+    static final String PLAYERS_KEY = "player";
+    static final String GENDER_KEY = "gender";
 
-    public PrideConfiguration(Pride givenPlugin) {
-        plugin = givenPlugin;
+    // private vars & constructor (use getters to get values from outside)
+    private boolean enabledEntry;
+    private boolean debugEntry;
+    private boolean tooltipEntry;
+
+    private Map<String, Map> familyNameEntries;
+    private Map<String, Map> playerEntries;
+    
+    // util vars
+    private FamilyNamesPlugin plugin;
+
+    public FamilyNamesConfig(FamilyNamesPlugin plugin) {
+        this.plugin = plugin;
     }
 
+    // reload from disk (replaces anything in memory, which should already have been written to disk)
     public void reload() {
-         plugin.reloadConfig();
+        plugin.reloadConfig();
 
         // if default value does not exist / is false, assume we need to save a new config file
-        Boolean prideInitialized = plugin.getConfig().getBoolean(PRIDE_INITIALIZED_KEY);
-        if (prideInitialized == null || prideInitialized == false) {
-            plugin.saveDefaultConfig();
-        }
+      //  Boolean prideInitialized = plugin.getConfig().getBoolean(PRIDE_INITIALIZED_KEY);
+       // if (prideInitialized == null || prideInitialized == false) {
+       //     plugin.saveDefaultConfig();
+       // }
 
         // config vars
-        distance = plugin.getConfig().getDouble(PRIDE_DISTANCE_KEY);
-        worlds = loadConfigWorldsFromDisk();
+      //  distance = plugin.getConfig().getDouble(PRIDE_DISTANCE_KEY);
+       // worlds = loadConfigWorldsFromDisk();
     }
 
+    // public getters
+    public boolean getEnabled() {
+        return enabledEntry;
+    }
+
+    // convenience getters
+    public Map getPlayerEntry(String playerName) {
+        return playerEntries.get(playerName);
+    }
+
+
+/*
     private HashMap loadConfigWorldsFromDisk() {
         // first load from disk
         ConfigurationSection unparsedWorldsSection = plugin.getConfig().getConfigurationSection(PRIDE_WORLDS_PATH);
@@ -153,5 +178,5 @@ public class FamilyNamesConfig {
         double y = Double.parseDouble(components[1]);
         double z = Double.parseDouble(components[2]);
         return new Location(world, x, y, z);
-    }
+    }*/
 }

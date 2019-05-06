@@ -32,6 +32,10 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (plugin.config.getEnabled() == false) {
+            return false; // disabled in config
+        }
+
         if (args.length != 1) {
             return false;
         } else if (senderHasPermission(sender, args[0]) == false) {
@@ -110,58 +114,4 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
         //             /family fset <player> <first_name> <surname>
     }
 
-    // permissions handling
-    // ---
-
-    public final String HOVER_PERMISSION_ADD_KEY = "hover.add";
-    public final String HOVER_PERMISSION_START_KEY = "hover.start";
-    public final String HOVER_PERMISSION_STOP_KEY = "hover.stop";
-    public final String HOVER_PERMISSION_RELOAD_KEY = "hover.reload";
-
-    public enum PermissionType {
-        RELOAD,
-        STOP,
-        START,
-        ADD,
-        UNKNOWN
-    }
-
-    public PermissionType permissionTypeFromString(String arg) {
-        if (arg.equalsIgnoreCase(HOVER_PERMISSION_ADD_CMD)) {
-            return PermissionType.ADD;
-        } else if (arg.equalsIgnoreCase(HOVER_PERMISSION_START_CMD)) {
-            return PermissionType.START;
-        } else if (arg.equalsIgnoreCase(HOVER_PERMISSION_STOP_CMD)) {
-            return PermissionType.STOP;
-        } else if (arg.equalsIgnoreCase(HOVER_PERMISSION_RELOAD_CMD)) {
-            return PermissionType.RELOAD;
-        } else {
-            return PermissionType.UNKNOWN;
-        }
-    }
-
-    public boolean senderHasPermission(CommandSender sender, String arg) {
-        if (!(sender instanceof Player)) {
-            return false;
-        }
-
-        if (sender.isOp() == true) {
-            return true;
-        }
-        
-        PermissionType type = permissionTypeFromString(arg);
-        switch (type) {
-            case RELOAD:
-                return sender.hasPermission(HOVER_PERMISSION_RELOAD_KEY) == true;
-            case STOP:
-                return sender.hasPermission(HOVER_PERMISSION_STOP_KEY) == true;
-            case START:
-                return sender.hasPermission(HOVER_PERMISSION_START_KEY) == true;
-            case ADD:
-                return sender.hasPermission(HOVER_PERMISSION_ADD_KEY) == true;
-            default:
-            case UNKNOWN:
-                return false;
-        }
-    }
 }

@@ -21,7 +21,7 @@ public class FamilyNamesPlugin extends JavaPlugin {
     public FamilyNamesChatComposer composer;
 
     private FamilyNamesChatListener chatListener;
-    private FamilyNamesLoginListener loginListener;
+    private FamilyNamesJoinListener joinListener;
     private FamilyNamesCommandExecutor executor;
 
     @Override
@@ -37,10 +37,11 @@ public class FamilyNamesPlugin extends JavaPlugin {
         getCommand("family").setExecutor(executor);
 
         // listeners (for player connections, chat messages)
+        joinListener = new FamilyNamesJoinListener(this);
+        Bukkit.getServer().getPluginManager().registerEvents(joinListener, this); 
+
         chatListener = new FamilyNamesChatListener(this);
         Bukkit.getServer().getPluginManager().registerEvents(chatListener, this); 
 
-        loginListener = new FamilyNamesLoginListener(this);
-        Bukkit.getServer().getPluginManager().registerEvents(loginListener, this); 
     }
 }
