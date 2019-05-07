@@ -16,6 +16,7 @@ import org.bukkit.Location;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class FamilyNamesConfig {
     // const keys
@@ -47,10 +48,23 @@ public class FamilyNamesConfig {
 
     // reload from disk (replaces anything in memory, which should already have been written to disk)
     public void reload() {
+        plugin.saveDefaultConfig();
         plugin.reloadConfig();
 
-        // if default value does not exist / is false, assume we need to save a new config file
-      //  Boolean prideInitialized = plugin.getConfig().getBoolean(PRIDE_INITIALIZED_KEY);
+        FileConfiguration configFile = plugin.getConfig();
+        enabledEntry = configFile.getBoolean(FamilyNamesConfig.ENABLED_KEY);
+        debugEntry = configFile.getBoolean(FamilyNamesConfig.DEBUG_KEY);
+        tooltipEntry = configFile.getBoolean(FamilyNamesConfig.TOOLTIP_KEY);
+
+
+        ConfigurationSection familyNamesSection = configFile.getConfigurationSection(FamilyNamesConfig.FAMILY_NAMES_KEY);
+        if (familyNamesSection != null) {
+            Map<String,Object> familyNamesSectionMap = (Map<String, Object>)familyNamesSection.getValues(false);
+        }
+
+     //   Map<String, Object> tooltipStrings =
+        //playerEntries = config
+
        // if (prideInitialized == null || prideInitialized == false) {
        //     plugin.saveDefaultConfig();
        // }

@@ -26,22 +26,86 @@ import net.minecraft.server.v1_13_R2.IChatBaseComponent.ChatSerializer;
 import net.minecraft.server.v1_13_R2.PacketPlayOutChat;
 import net.minecraft.server.v1_13_R2.PlayerConnection;
 
+import javax.json.JSONObject;
+import javax.json.JSONArray;
+
 public class FamilyNamesChatComposer {
-    public void sendMessage(String senderName, Player recipient, String message, String hoverText) {
-        String jsonMessage = composeMessage(senderName, message, hoverText);
+    public void sendMessage(String senderName, Player recipient, String message) {
+        String jsonMessage = composeMessage(senderName, message);
         sendJsonMessage(recipient, jsonMessage);
     }
 
-    public String composeMessage(String playerName, String message, String hoverText) {
-        String jsonString = "[\"\", {\"text\":\"" + playerName + "\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"" + hoverText + "\"}}, {\"text\":\"" + message + "\"}]";
+    public void sendMessage(String senderName, Player recipient, String message, String playerHoverText) {
+        String jsonMessage = composeMessage(senderName, message, playerHoverText);
+        sendJsonMessage(recipient, jsonMessage);
+    }
+
+    public void sendMessage(String senderName, Player recipient, String message, String playerHoverText, String clickEventCommandString) {
+        String jsonMessage = composeMessage(senderName, message, playerHoverText, clickEventCommandString);
+        sendJsonMessage(recipient, jsonMessage);
+    }
+
+    public void sendMessage(String senderName, Player recipient, String message, String playerHoverText, String clickEventCommandString, String color) {
+        String jsonMessage = composeMessage(senderName, message, playerHoverText, clickEventCommandString, color);
+        sendJsonMessage(recipient, jsonMessage);
+    }
+
+    private String composeMessage(String playerName, String message) {
+        return composeMessage(playerName, message, null, null, null);
+    }
+
+    private String composeMessage(String playerName, String message, String playerHoverText) {
+        return composeMessage(playerName, message, playerHoverText, null, null);
+    }
+
+    private String composeMessage(String playerName, String message, String playerHoverText, String clickEventCommandString) {
+        return composeMessage(playerName, message, playerHoverText, clickEventCommandString, null);
+    }
+
+    private String composeMessage(String playerName, String message, String playerHoverText, String clickEventCommandString, String color) {
+        JSONArray messageJSON = new JSONArray();
+        messageJSON.add("");
+
+        JSONObject playerNameJSON = new JSONObject();
+        String composedPlayerNameText = String.format("%s", playerName);
+        playerNameJSON.put("text", composedPlayerNameText);
+
+        if (playerHoverText != null) {
+            JSONObject hoverJSON = new JSONObject();
+            hoverJSON.put("action", "show_text");
+            hoverJSON.put("value", playerHoverText);
+            playerNameJSON.put("hoverEvent", hoverJSON);
+        }
+
+        messageJSON.add(playerNameJSON);
+
+        JSONObject messageBodyJSON = new JSONObject();
+        messageBodyJSON.put("text", message);
+
+        if (clickEventCommandString != null) {
+            JSONObject clickJSON = new JSONObject();
+            clickJSON.put("action", "run_command");
+            clickJSON.put("value", clickEventCommandString);
+            messageBodyJSON.put("clickEvent", clickJSON);
+        }
+
+        if (color != null) {
+            messageBodyJSON .put("color", color);
+        }
+
+        messageJSON.add(messageBodyJSON);
+
+        String jsonString = messageJSON.toString();
+
+        //String jsonString = "[\"\", {\"text\":\"" + playerName + "\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"" + hoverText + "\"}}, {\"text\":\"" + message + "\"}]";
         return jsonString;
     }
 
-    public static void sendJsonMessage(Player p, String s) {
+    private static void sendJsonMessage(Player p, String s) {
         ( (CraftPlayer)p ).getHandle().playerConnection.sendPacket( createPacketPlayOutChat(s) );
     }
 
-    public static PacketPlayOutChat createPacketPlayOutChat(String s) {
+    private static PacketPlayOutChat createPacketPlayOutChat(String s) {
         IChatBaseComponent comp = ChatSerializer.a(s);
         return new PacketPlayOutChat(comp);
     }
