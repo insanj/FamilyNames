@@ -41,5 +41,4 @@ player:
         gender: male
         first_name: Harry
         surname: Potter
-        tooltip:
-            - Username: insanj
+        tooltip: insanj

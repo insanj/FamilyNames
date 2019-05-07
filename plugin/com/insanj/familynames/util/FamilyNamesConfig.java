@@ -36,9 +36,22 @@ public class FamilyNamesConfig {
     private boolean debugEntry;
     private boolean tooltipEntry;
 
-    private Map<String, Map> familyNameEntries;
-    private Map<String, Map> playerEntries;
-    
+    private List<String> maleFirstNameEntries;
+    private List<String> femaleFirstNameEntries;
+    private List<String> surnameEntries;
+    private Map<String, PlayerEntry> playerEntries;
+
+    class PlayerEntry {
+        public final String name, gender, familyNameFirstName, familyNameSurname, tooltip;
+        public PlayerEntry(String name, String gender, String familyNameFirstName, String familyNameSurname, String tooltip) {
+            this.name = name;
+            this.gender = gender;
+            this.familyNameFirstName = familyNameFirstName;
+            this.familyNameSurname = familyNameSurname;
+            this.tooltip = tooltip;
+        }
+    }
+
     // util vars
     private FamilyNamesPlugin plugin;
 
@@ -56,22 +69,28 @@ public class FamilyNamesConfig {
         debugEntry = configFile.getBoolean(FamilyNamesConfig.DEBUG_KEY);
         tooltipEntry = configFile.getBoolean(FamilyNamesConfig.TOOLTIP_KEY);
 
+        String maleFirstNameConfigSectionPath = String.format("%s.%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.FIRST_NAMES_KEY, FamilyNamesConfig.MALE_KEY);
+        maleFirstNameEntries = configFile.getConfigurationSection(maleFirstNameConfigSectionPath).getValues(true);
 
-        ConfigurationSection familyNamesSection = configFile.getConfigurationSection(FamilyNamesConfig.FAMILY_NAMES_KEY);
-        if (familyNamesSection != null) {
-            Map<String,Object> familyNamesSectionMap = (Map<String, Object>)familyNamesSection.getValues(false);
+        String femaleFirstNameConfigSectionPath = String.format("%s.%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.FIRST_NAMES_KEY, FamilyNamesConfig.FEMALE_KEY);
+        femaleFirstNameEntries = configFile.getConfigurationSection(femaleFirstNameConfigSectionPath).getValues(true);
+
+        String surnameConfigSectionPath = String.format("%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.SURNAMES_KEY);
+        surnameEntries = configFile.getConfigurationSection(surnameConfigSectionPath).getValues(true);
+
+        ConfigurationSection playersSection = configFile.getConfigurationSection(FamilyNamesConfig.PLAYERS_KEY);
+        HashMap<PlayerEntry> players = new HashMap<PlayerEntry>();
+        if (playersSection != null) {
+            Map<String,Object> playersSectionMap = (Map<String, Object>)playersSection.getValues(true);
+
+            for (String name : playersSectionMap.keySet()) {
+                Map<String, String> playerMetaMap = (Map<String, String>)playersSectionMap.get(name);
+                PlayerEntry entry = new PlayerEntry(name, playerMetaMap.get(FamilyNamesConfig.GENDER_KEY), playerMetaMap.get(FamilyNamesConfig.FIRST_NAMES_KEY), playerMetaMap.get(FamilyNamesConfig.SURNAMES_KEY), playerMetaMap.get(FamilyNamesConfig.TOOLTIP_KEY));
+                players.put(name, entry);
+            }
         }
 
-     //   Map<String, Object> tooltipStrings =
-        //playerEntries = config
-
-       // if (prideInitialized == null || prideInitialized == false) {
-       //     plugin.saveDefaultConfig();
-       // }
-
-        // config vars
-      //  distance = plugin.getConfig().getDouble(PRIDE_DISTANCE_KEY);
-       // worlds = loadConfigWorldsFromDisk();
+        playerEntries = players;
     }
 
     // public getters
@@ -79,148 +98,27 @@ public class FamilyNamesConfig {
         return enabledEntry;
     }
 
-    // convenience getters
-    public Map getPlayerEntry(String playerName) {
+    public boolean getDebug() {
+        return debugEntry;
+    }
+
+    public boolean getTooltip() {
+        return tooltipEntry;
+    }
+
+    public List<String> getFamilyMaleFirstNames() {
+        return maleFirstNameEntries;
+    }
+
+    public List<String> getFamilyFemaleFirstNames() {
+        return femaleFirstNameEntries;
+    }
+
+    public List<String> getFamilySurnames() {
+        return surnameEntries;
+    }
+
+    public PlayerEntry getPlayerEntry(String playerName) {
         return playerEntries.get(playerName);
     }
-
-
-/*
-    public String getPlayerNameString(Player player) { // override this to customize player name format
-        return "<" + player.getName() + "> ";
-    }
-
-    public Map<String, Object> getTooltipStringsForPlayer(Player player) {
-        ConfigurationSection configSection = this.plugin.getConfig().getConfigurationSection(player.getName());
-        if (configSection == null) {
-            return null; // nothing configured for player
-        }
-
-        Map<String, Object> tooltipStrings = (Map<String, Object>)configSection.getValues(false);
-        if (tooltipStrings == null || tooltipStrings.size() <= 0) {
-            return null;
-        }
-
-        return tooltipStrings;
-    }
-    
-    public String getHoverTextForPlayer(Player player) {
-        Map<String, Object> tooltipStrings = getTooltipStringsForPlayer(player);
-        String hoverText = "";
-        for (String tooltipKey : tooltipStrings.keySet()) {
-            String tooltipContents = (String)tooltipStrings.get(tooltipKey);
-            hoverText += tooltipKey + ": " + tooltipContents + "\n";
-        }
-        return hoverText.trim();
-    }
-
-
-
-    private HashMap loadConfigWorldsFromDisk() {
-        // first load from disk
-        ConfigurationSection unparsedWorldsSection = plugin.getConfig().getConfigurationSection(PRIDE_WORLDS_PATH);
-        if (unparsedWorldsSection != null) {
-            HashMap parsedWorlds = new HashMap();
-            Map<String, Object> unparsedWorlds = (Map<String, Object>)unparsedWorldsSection.getValues(false);
-
-            for (String worldUIDString : unparsedWorlds.keySet()) {
-                ConfigurationSection worldAreasSection = (ConfigurationSection) unparsedWorlds.get(worldUIDString);
-                String worldAreasSectionPath = worldAreasSection.getCurrentPath();
-                Map<String, Object> unparsedWorldAreas = (Map<String, Object>) plugin.getConfig().getConfigurationSection(worldAreasSectionPath).getValues(false);
-               
-                HashMap parsedWorldAreas = new HashMap();
-                UUID worldUID = UUID.fromString((String)worldUIDString);
-                World world = plugin.getServer().getWorld(worldUID);
-                for (String areaName : unparsedWorldAreas.keySet()) {
-                    ConfigurationSection areaDataSection = (ConfigurationSection) unparsedWorldAreas.get(areaName);
-                    String areaDataSectionPath = areaDataSection.getCurrentPath();
-                    Map<String, Object> areaDataMap = (Map<String, Object>) plugin.getConfig().getConfigurationSection(areaDataSectionPath).getValues(false);
-                    
-                    Object xObj = areaDataMap.get("x");
-                    Object yObj = areaDataMap.get("y");
-                    Object zObj = areaDataMap.get("z");
-                    Double x, y, z;
-                    if (xObj instanceof Integer) {
-                        x = new Double((Integer)xObj);
-                    } else {
-                        x = (Double)xObj;
-                    }
-
-                    if (yObj instanceof Integer) {
-                        y = new Double((Integer)yObj);
-                    } else {
-                        y = (Double)yObj;
-                    }
-
-                    if (zObj instanceof Integer) {
-                        z = new Double((Integer)zObj);
-                    } else {
-                        z = (Double)zObj;
-                    }
-
-                    Location locationFromData = new Location(world, (double)x, (double)y, (double)z);
-                    parsedWorldAreas.put(areaName, locationFromData);
-                }
-
-                parsedWorlds.put(worldUID, parsedWorldAreas);
-            }
-
-            return parsedWorlds;
-        } else {
-            return new HashMap();
-        }
-    }
-
-    // public getters
-    public double getConfigDistance() {
-        return distance;
-    }
-
-    public HashMap getConfigWorlds() {
-        return worlds;
-    }
-
-    public HashMap getConfigAreas(World world) {
-        Object result = worlds.get(world.getUID());
-        if (result == null) {
-            return new HashMap();
-        } else {
-            return (HashMap)result;
-        }
-    }
-
-    public void setConfigAreas(World world, HashMap givenAreas) {
-        if (world == null || givenAreas == null) {
-            return;
-        }
-
-        HashMap encodedAreas = new HashMap();
-        givenAreas.forEach((areaName, areaLocation) -> {
-            HashMap areaData = new HashMap();
-            Location areaLocation2 = (Location)areaLocation;
-            areaData.put("x", areaLocation2.getX());
-            areaData.put("y", areaLocation2.getY());
-            areaData.put("z", areaLocation2.getZ());
-            encodedAreas.put(areaName, areaData);
-        });
-
-        String worldUIDString = world.getUID().toString();
-        String worldSectionPath = PRIDE_WORLDS_PATH + "." + worldUIDString;
-        plugin.getConfig().createSection(worldSectionPath, encodedAreas);
-        plugin.saveConfig();
-        worlds.put(world.getUID(), givenAreas);
-    }
-
-    // static helper functions
-    static String transformLocationToString(Location location) {
-        return String.format("%.2f,%.2f,%.2f", location.getX(),location.getY(),location.getZ());
-    }
-
-    static Location transformStringToLocation(World world, String string) {
-        String[] components = string.split(",");
-        double x = Double.parseDouble(components[0]);
-        double y = Double.parseDouble(components[1]);
-        double z = Double.parseDouble(components[2]);
-        return new Location(world, x, y, z);
-    }*/
 }
