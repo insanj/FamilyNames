@@ -42,12 +42,12 @@ public class FamilyNamesConfig {
     private Map<String, PlayerEntry> playerEntries;
 
     class PlayerEntry {
-        public final String name, gender, familyNameFirstName, familyNameSurname, tooltip;
-        public PlayerEntry(String name, String gender, String familyNameFirstName, String familyNameSurname, String tooltip) {
+        public final String name, gender, firstName, surname, tooltip;
+        public PlayerEntry(String name, String gender, String firstName, String familyNameSurname, String tooltip) {
             this.name = name;
             this.gender = gender;
-            this.familyNameFirstName = familyNameFirstName;
-            this.familyNameSurname = familyNameSurname;
+            this.firstName = firstName;
+            this.surname = surname;
             this.tooltip = tooltip;
         }
     }
@@ -120,5 +120,46 @@ public class FamilyNamesConfig {
 
     public PlayerEntry getPlayerEntry(String playerName) {
         return playerEntries.get(playerName);
+    }
+
+    public void addPlayerEntry(PlayerEntry playerEntry) {
+        configFile.getConfigurationSection().
+
+        String selectorForPlayer = String.format("%s.%s", FamilyNamesConfig.PLAYERS_KEY, playerEntry.name);   
+        FileConfiguration configFile = plugin.getConfig();
+
+        String genderSelector = String.format("%s.%s", selectorForPlayer, FamilyNamesConfig.GENDER_KEY);
+        configFile.set(genderSelector, playerEntry.gender);
+
+        String firstNameSelector = String.format("%s.%s", selectorForPlayer, FamilyNamesConfig.FIRST_NAMES_KEY);
+        configFile.set(firstNameSelector, playerEntry.firstName);
+
+        String surnameSelector = String.format("%s.%s", selectorForPlayer, FamilyNamesConfig.SURNAMES_KEY);
+        configFile.set(surnameSelector, playerEntry.surname);
+
+        String tooltipSelector = String.format("%s.%s", selectorForPlayer, FamilyNamesConfig.TOOLTIP_KEY);
+        configFile.set(tooltipSelector, playerEntry.tooltip);
+
+        plugin.saveConfig();
+        reload();
+    }
+
+    // convenience rando menthods
+    public String getRandomMaleFirstName() {
+        List<String> maleFirstNames = getFamilyMaleFirstNames();
+        int randomMaleIdx = Math.random(maleFirstNames.size());
+        return maleFirstNames.get(randomMaleIdx);
+    }
+
+    public String getRandomFemaleFirstName() {
+        List<String> femaleFirstNames = getFamilyFemaleFirstNames();
+        int randomFemaleIdx = Math.random(femaleFirstNames.size());
+        return femaleFirstNames.get(randomFemaleIdx);   
+    }
+
+    public String getRandomSurname() {
+        List<String> surnames = getFamilySurnames();
+        int randomSurnameIdx = Math.random(surnames.size());
+        return surnames.get(randomSurnameIdx);   
     }
 }

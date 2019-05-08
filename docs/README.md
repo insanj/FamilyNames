@@ -40,6 +40,16 @@ FamilyNames
 
 <br/>
 
+<h2>Commands</h2>
+
+| Command | Arguments | Description |
+| --- | --- |
+| `/family set <player_name> <family_name>` | `player_name` = name of a player currently logged into the server, `family_name` = string that represents the Family Name to use in chat (should already be composed of a first_name and surname before this point) | Sets the Family Name of a player |
+| `/family removep <player_name>` | `player_name` = name of a player | Removes the Family Name for the player |
+| `/family add <type> <name>` | `type` = `male_first_name`, `female_first_name`, or `surname`; `name` = name to add | Adds a Family Name to the config |
+| `/family remove <type> <name>` | `type` = `male_first_name`, `female_first_name`, or `surname`; `name` = name to remove | Removes a Family Name from the config |
+
+
 <h2 align="center"><a href="https://bukkit.org/threads/familynames.478902/">Original Request</a></h2>
 
  What I would like: This is for a Harry Potter themed server that I am making. When a player joins the server their name changes to a name that has been selected randomly from the config file, first name and a surname they are both randomly generated and when they are they get put together when they are joined they say if they are male or female and that depends their first name, when they join a message pops up and they click either male or female in the chat section and that sets their name (configurable), an example is Steve as a first name and surname Stephen then put them together making Steve_Stephen. This is applied as a nickname and if a player does do -> /nick example <- then It overrides the original name of Steve_Stephen and it removes the Steve and makes Stephen a suffix so: NICKNAME [Stephen] <- and if it hasn’t been nick named then it would be: FIRSTNAMEGENERATED_SURNAMEGENERATED

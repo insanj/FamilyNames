@@ -65,8 +65,15 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
     }
 
     private boolean onFamilySetCommand(CommandSender sender, String[] args) {
-        //  family.set:
-        //              /family set <player> <family_name>
+        if (args < 3) {
+            return false;
+        }
+
+        String playerName = args[1];
+        String familyName = args[2];
+
+        
+
     }
 
 
@@ -76,8 +83,10 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
         //             /family add <family_name>
 
         Player player = (Player)sender;
+
         HashMap defaultContents = new HashMap();
         defaultContents.put("Name", player.getName());
+
         plugin.getConfig().createSection(player.getName(), defaultContents);
         plugin.saveConfig();
 

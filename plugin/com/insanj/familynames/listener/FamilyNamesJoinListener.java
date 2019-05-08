@@ -39,13 +39,16 @@ public class FamilyNamesJoinListener implements Listener {
             return; // player already setup
         }
 
-        plugin.composer.sendMessage("[FamilyNames]", player, "Welcome! Set up your name by clicking: [Male] or [Female]", "TODO");
+        plugin.composer.sendMessage("[FamilyNames]", player, "Welcome! Please click a gender:");
 
-        //String msg = event.getMessage();
-      //  for (Player recipient : event.getRecipients​()) {
-      //      plugin.composer.sendMessage(player, recipient, msg);
-        //}
+        String randomMaleFirstName = plugin.config.getRandomMaleFirstName();
+        String randomFemaleFirstName = plugin.config.getRandomFemaleFirstName();
+        String randomSurname = plugin.config.getRandomSurname();
 
-        // ask for male / female
+        String maleClickResultCmd = String.format("family set %s %s_%s", player.getName(), randomMaleFirstName, randomSurname);
+        plugin.composer.sendMessage("[FamilyNames]", player, "[MALE]", null, maleClickResultCmd, "aqua");
+
+        String femaleClickResultCmd = String.format("family set %s %s_%s", player.getName(), randomFemaleFirstName, randomSurname);
+        plugin.composer.sendMessage("[FamilyNames]", player, "[FEMALE]", null, femaleClickResultCmd, "light_purple");
     }
 }
