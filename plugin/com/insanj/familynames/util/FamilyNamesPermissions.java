@@ -20,7 +20,6 @@ public class FamilyNamesPermissions {
     public static final String FAMILY_ADD_KEY = "add";
     public static final String FAMILY_REMOVEP_KEY = "removep";
     public static final String FAMILY_ALL_KEY = "all";
-    public static final String FAMILY_FSET_KEY = "fset";
 
     public enum PermissionType {
         SET,
@@ -28,7 +27,6 @@ public class FamilyNamesPermissions {
         ADD,
         REMOVEP,
         ALL,
-        FSET,
         UNKNOWN
     }
 
@@ -43,8 +41,6 @@ public class FamilyNamesPermissions {
             return PermissionType.REMOVEP;
         } else if (arg.equalsIgnoreCase(FAMILY_ALL_KEY)) {
             return PermissionType.ALL;
-        } else if (arg.equalsIgnoreCase(FAMILY_FSET_KEY)) {
-            return PermissionType.FSET;
         } else {
             return PermissionType.UNKNOWN;
         }
@@ -73,8 +69,6 @@ public class FamilyNamesPermissions {
                 return sender.hasPermission(String.format("family.%s",FAMILY_ADD_KEY)) == true;
             case REMOVEP:
                 return sender.hasPermission(String.format("family.%s",FAMILY_REMOVEP_KEY)) == true;
-            case FSET:
-                return sender.hasPermission(String.format("family.%s",FAMILY_FSET_KEY)) == true;
             case ALL:
                 return true;
             default:

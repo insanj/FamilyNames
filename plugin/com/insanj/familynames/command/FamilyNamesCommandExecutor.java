@@ -19,7 +19,7 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 
 public class FamilyNamesCommandExecutor implements CommandExecutor {
     private final FamilyNamesPlugin plugin;
-    private final String ERROR_NO_PERM = ChatColor.RED + "You do not have the required permission to run this Hover command.";
+    private final String ERROR_NO_PERM = ChatColor.RED + "You do not have the required permission to run this FamilyNames command.";
 
     public FamilyNamesCommandExecutor(Hover plugin) {
         this.plugin = plugin;
@@ -50,8 +50,6 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
                 return onFamilyAddCommand(sender, args);
             case REMOVEP:
                 return onFamilyRemovePCommand(sender, args);
-            case FSET:
-                return onFamilyFSetCommand(sender, args);
             default:
             case ALL:
             case UNKNOWN:
@@ -60,8 +58,7 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
     }
 
     private boolean onFamilyRemoveCommand(CommandSender sender, String[] args) {
-        //   family.remove:
-        //             /family remove <family_name>
+        return true;
     }
 
     private boolean onFamilySetCommand(CommandSender sender, String[] args) {
@@ -70,47 +67,24 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
         }
 
         String playerName = args[1];
-        String familyName = args[2];
+        String[] familyName = args[2].split("_");
+        if (familyName == null || familyName.length != 2) {
+            return false;
+        }
 
-        
+        String firstName = familyName[0];
+        String surname = familyName[1];
 
+        FamilyNamesConfig.PlayerEntry entry = new PlayerEntry(sender.getName(), "", firstName, surname, "");
+        plugin.config.addPlayerEntry(entry);
+        return true;
     }
-
 
     private boolean onFamilyAddCommand(CommandSender sender, String[] args) {
-        //   family.add:
-
-        //             /family add <family_name>
-
-        Player player = (Player)sender;
-
-        HashMap defaultContents = new HashMap();
-        defaultContents.put("Name", player.getName());
-
-        plugin.getConfig().createSection(player.getName(), defaultContents);
-        plugin.saveConfig();
-
-        sender.sendMessage(ChatColor.LIGHT_PURPLE + "Wrote default config for " + player.getName() + "!");
         return true;
     }
-
 
     private boolean onFamilyRemovePCommand(CommandSender sender, String[] args) {
-        //  family.removep:
-        //             /family removep <player>
-
-    }
-
-
-    private boolean onFamilyFSetCommand(CommandSender sender, String[] args) {
-        //   family.fset:
-        //             /family fset <player> <first_name> <surname>
-    }
-
-    private boolean onFamilyReloadCommand(CommandSender sender, String[] args) {
-        plugin.reloadConfig();
-        sender.sendMessage(ChatColor.LIGHT_PURPLE + "Hover reloaded!");
         return true;
     }
-
 }

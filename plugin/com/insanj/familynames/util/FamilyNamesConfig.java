@@ -145,21 +145,26 @@ public class FamilyNamesConfig {
     }
 
     // convenience rando menthods
+    public int random(int min, int max) {
+        Random r = new Random();
+        return rand.nextInt((max - min) + 1) + min;
+    }
+
     public String getRandomMaleFirstName() {
         List<String> maleFirstNames = getFamilyMaleFirstNames();
-        int randomMaleIdx = Math.random(maleFirstNames.size());
+        int randomMaleIdx = Math.random(0, maleFirstNames.size()-1);
         return maleFirstNames.get(randomMaleIdx);
     }
 
     public String getRandomFemaleFirstName() {
         List<String> femaleFirstNames = getFamilyFemaleFirstNames();
-        int randomFemaleIdx = Math.random(femaleFirstNames.size());
+        int randomFemaleIdx = random(0, femaleFirstNames.size()-1);
         return femaleFirstNames.get(randomFemaleIdx);   
     }
 
     public String getRandomSurname() {
         List<String> surnames = getFamilySurnames();
-        int randomSurnameIdx = Math.random(surnames.size());
+        int randomSurnameIdx = random(0, surnames.size()-1);
         return surnames.get(randomSurnameIdx);   
     }
 }

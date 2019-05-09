@@ -40,6 +40,10 @@ FamilyNames
 
 <br/>
 
+<img src="https://pbs.twimg.com/profile_images/1205959797/bukkit_400x400.png" width="50" height="50"><a href="https://bukkit.org/threads/familynames.478902/">See the original request on Bukkit Forums.</a>
+
+<br/>
+
 <h2>Commands</h2>
 
 | Command | Arguments | Description |
@@ -50,53 +54,11 @@ FamilyNames
 | `/family remove <type> <name>` | `type` = `male_first_name`, `female_first_name`, or `surname`; `name` = name to remove | Removes a Family Name from the config |
 
 
-<h2 align="center"><a href="https://bukkit.org/threads/familynames.478902/">Original Request</a></h2>
+<br/>
 
- What I would like: This is for a Harry Potter themed server that I am making. When a player joins the server their name changes to a name that has been selected randomly from the config file, first name and a surname they are both randomly generated and when they are they get put together when they are joined they say if they are male or female and that depends their first name, when they join a message pops up and they click either male or female in the chat section and that sets their name (configurable), an example is Steve as a first name and surname Stephen then put them together making Steve_Stephen. This is applied as a nickname and if a player does do -> /nick example <- then It overrides the original name of Steve_Stephen and it removes the Steve and makes Stephen a suffix so: NICKNAME [Stephen] <- and if it hasn’t been nick named then it would be: FIRSTNAMEGENERATED_SURNAMEGENERATED
+<h2>Permissions</h2>
 
-Example of config file
-
-    #First Names
-    #
-    Harry
-    Henry
-    Albert
-    Cederic
-    Adam
-    Oliver
-    Dominic
-    Elizabeth
-    Lucy
-    Hermione
-
-    #Surnames and Suffix’s
-    #
-    Potter &7[&8Potter&7]&f
-    Granger &7[&8Granger&7]&f
-    Weasley &7[&8Weasley&7]&f
-    Malfoy &7[&8Malfoy&7]&f
-    Diggory &7[&8Diggory&7]&f
-    Patil &7[&8Patil&7]&f
-    Longbottom &7[&8Longbottom&7]&f
-
-
-
-
-
-Ideas for commands:
-
-    Removes a family from config: /Family remove <family name>
-    Sets a players family name: /Family set <player> <family name>
-    Add’s a family to config: /Family add <family name>
-    Removes a player from a family so they don’t have one unless it is set this means they won’t have a suffix and it is removed so they only have their standard Minecraft username: /family removep <player>
-    Sets first and last name /family fset <player> <Firstname> <Surname>
-
-
-
-
-
-Ideas for permissions:
-
+```
     Family.set
     Family.remove
     Family.add
@@ -118,8 +80,18 @@ Family.all =gives permission to all commands
 
 Family.fset =gives permission to fset
 
+```
+
 <br/>
-<h2 align="center">Authors</h2>
+
+<h2>Helpful Links</h2>
+
+- [Bukkit Configuration API Reference](https://bukkit.gamepedia.com/Configuration_API_Reference)
+- [Minecraft Formatting Color Codes](https://minecraft.gamepedia.com/Formatting_codes#Color_codes) & [Minecraft Colored Text Generator](https://codepen.io/Rundik/pen/ggVemP)
+
+<br/>
+
+<h2>Authors</h2>
 
 ```
 Julian Weiss

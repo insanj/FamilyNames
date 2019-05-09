@@ -30,6 +30,69 @@ import javax.json.JSONObject;
 import javax.json.JSONArray;
 
 public class FamilyNamesChatComposer {
+    public void sendFamilyNamesMessage(FamilyNamesConfig.PlayerEntry sender, Player recipient, String message) {
+        JSONArray messageJSON = new JSONArray();
+        messageJSON.add("");
+
+        // 0
+        JSONObject fullnameJSON = new JSONObject();
+        String fullnameString = String.format("%s_%s", sender.first_name, sender.surname);
+        fullnameJSON.put("text", fullnameString);
+        fullnameJSON.put("color", "white");
+        messageJSON.add(fullnameJSON);
+
+        // 1
+        JSONObject startBracketJSON = new JSONObject();
+        String startBracket = "[";
+        startBracketJSON.put("text", composedPlayerNameText);
+        startBracketJSON.put("color", "gray");
+        messageJSON.add(startBracketJSON);
+
+        // 2
+        JSONObject playerNameJSON = new JSONObject();
+        String composedPlayerNameText = String.format("%s", sender.surname);
+        playerNameJSON.put("text", composedPlayerNameText);
+        playerNameJSON.put("color", "dark_gray");
+
+        // hover over 2
+        if (sender.tooltip != null) {
+            JSONObject hoverJSON = new JSONObject();
+            hoverJSON.put("action", "show_text");
+            hoverJSON.put("value", sender.tooltip);
+            playerNameJSON.put("hoverEvent", hoverJSON);
+        }
+
+        messageJSON.add(playerNameJSON);
+
+        // 3
+        String endBracket = "]";
+        playerNameJSON.put("text", composedPlayerNameText);
+        playerNameJSON.put("color", "gray");
+
+        // 4
+        JSONObject messageBodyJSON = new JSONObject();
+        messageBodyJSON.put("text", message);
+
+        if (clickEventCommandString != null) {
+            JSONObject clickJSON = new JSONObject();
+            clickJSON.put("action", "run_command");
+            clickJSON.put("value", String.format("/tell %s", sender.name));
+            messageBodyJSON.put("clickEvent", clickJSON);
+        }
+
+        if (color != null) {
+            messageBodyJSON.put("color", color);
+        } else {
+            messageBodyJSON.put("color", "white");
+        }
+
+        messageJSON.add(messageBodyJSON);
+
+        // send!
+        String jsonString = messageJSON.toString();
+        sendJsonMessage(recipient, jsonString);
+    }
+
     public void sendMessage(String senderName, Player recipient, String message) {
         String jsonMessage = composeMessage(senderName, message);
         sendJsonMessage(recipient, jsonMessage);
