@@ -73,6 +73,9 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
 
         FamilyNamesConfig.PlayerEntry entry = new PlayerEntry(sender.getName(), "", firstName, surname, "");
         plugin.config.addPlayerEntry(entry);
+
+        plugin.composer.sendMessage("[FamilyNames]", sender, String.format("Welcome, %s_%s!", entry.firstName, entry.surname));
+
         return true;
     }
 

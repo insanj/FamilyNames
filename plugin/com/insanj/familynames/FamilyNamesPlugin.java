@@ -42,6 +42,17 @@ public class FamilyNamesPlugin extends JavaPlugin {
 
         chatListener = new FamilyNamesChatListener(this);
         Bukkit.getServer().getPluginManager().registerEvents(chatListener, this); 
+    }
 
+    public static void info(String s) {
+        if (config.getDebug() == true) {
+            Bukkit.getLogger().info(s);
+        }
+    }
+
+    public static void warning(String s) {
+        if (config.getDebug() == true) {
+            Bukkit.getLogger().warning(s);
+        }
     }
 }

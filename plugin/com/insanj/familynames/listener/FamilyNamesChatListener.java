@@ -34,9 +34,13 @@ public class FamilyNamesChatListener implements Listener {
         }
 
         Player player = event.getPlayer();
-        Map entry = plugin.config.getPlayerEntry(player);
+        PlayerEntry entry = plugin.config.getPlayerEntry(player);
         if (entry == null) {
             return; // nothing configured
+        }
+
+        if (plugin.config.getTooltip() == false) {
+            entry.tooltip = null;
         }
         
         String msg = event.getMessage();
