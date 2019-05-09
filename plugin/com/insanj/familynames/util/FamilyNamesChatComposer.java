@@ -36,7 +36,7 @@ public class FamilyNamesChatComposer {
 
         // 0
         JSONObject fullnameJSON = new JSONObject();
-        String fullnameString = String.format("%s_%s", sender.first_name, sender.surname);
+        String fullnameString = String.format("<%s_%s>", sender.first_name, sender.surname);
         fullnameJSON.put("text", fullnameString);
         fullnameJSON.put("color", "white");
         messageJSON.add(fullnameJSON);

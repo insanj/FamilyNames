@@ -129,8 +129,6 @@ public class FamilyNamesConfig {
 
     // player command funcs
     public void addPlayerEntry(PlayerEntry playerEntry) { // -onFamilySetCommand
-        configFile.getConfigurationSection().
-
         String selectorForPlayer = String.format("%s.%s", FamilyNamesConfig.PLAYERS_KEY, playerEntry.name);   
         FileConfiguration configFile = plugin.getConfig();
 
@@ -151,28 +149,90 @@ public class FamilyNamesConfig {
     }
 
     public boolean removePlayerEntry(String playerName) { // -onFamilyRemovePCommand
-
+        String selectorForPlayer = String.format("%s.%s", FamilyNamesConfig.PLAYERS_KEY, playerName);   
+        FileConfiguration configFile = plugin.getConfig();
+        configFile.set(selectorForPlayer, null);
+        plugin.saveConfig();
+        reload();
     }
 
     public boolean addFamilyName(String type, String string) { // -onFamilyAddCommand
+        FileConfiguration configFile = plugin.getConfig();
+
         if (typeString.equals(FAMILY_NAME_MALE_FIRST_NAME_TYPE)) {
-            
+            String maleFirstNameSelector = String.format("%s.%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.FIRST_NAMES_KEY, FamilyNamesConfig.MALE_KEY);
+
+            List<String> existingMaleFirstNames = configFile.get(maleFirstNameSelector);
+            ArrayList<String> addedMaleFirstNames = = new ArrayList<String>(existingMaleFirstNames);
+            addedMaleFirstNames.add(string);
+
+            configFile.set(maleFirstNameSelector, addedMaleFirstNames);
+            plugin.saveConfig();
+            reload();
+            return true;
         } else if (typeString.equals(FAMILY_NAME_FEMALE_FIRST_NAME_TYPE)) {
+            String femaleFirstNameSelector = String.format("%s.%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.FIRST_NAMES_KEY, FamilyNamesConfig.FEMALE_KEY);
 
+            List<String> existingFemaleFirstNames = configFile.get(femaleFirstNameSelector);
+            ArrayList<String> addedFemaleFirstNames = new ArrayList<String>(existingFemaleFirstNames);
+            addedFemaleFirstNames.add(string);
+
+            configFile.set(femaleFirstNameSelector, addedFemaleFirstNames);
+            plugin.saveConfig();
+            reload();
+            return true;
         } else if (typeString.equals(FAMILY_NAME_SURNAME_TYPE)) {
+            String surnameSelector = String.format("%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.SURNAMES_KEY);
 
+            List<String> existingSurnames = configFile.get(surnameSelector);
+            ArrayList<String> addedSurnames = = new ArrayList<String>(existingSurnames);
+            addedSurnames.add(string);
+
+            configFile.set(surnameSelector, addedSurnames);
+            plugin.saveConfig();
+            reload();
+            return true;
         } else {
             return false;
         }
     }
 
     public void removeFamilyName(String type, String string) { // -onFamilyRemoveCommand
+        FileConfiguration configFile = plugin.getConfig();
+
         if (typeString.equals(FAMILY_NAME_MALE_FIRST_NAME_TYPE)) {
+            String maleFirstNameSelector = String.format("%s.%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.FIRST_NAMES_KEY, FamilyNamesConfig.MALE_KEY);
 
+            List<String> existingMaleFirstNames = configFile.get(maleFirstNameSelector);
+            ArrayList<String> removedMaleFirstNames = = new ArrayList<String>(existingMaleFirstNames);
+            removedMaleFirstNames.remove(string);
+
+            configFile.set(maleFirstNameSelector, removedMaleFirstNames);
+            plugin.saveConfig();
+            reload();
+            return true;
         } else if (typeString.equals(FAMILY_NAME_FEMALE_FIRST_NAME_TYPE)) {
+            String femaleFirstNameSelector = String.format("%s.%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.FIRST_NAMES_KEY, FamilyNamesConfig.FEMALE_KEY);
 
+            List<String> existingFemaleFirstNames = configFile.get(femaleFirstNameSelector);
+            ArrayList<String> removedFemaleFirstNames = new ArrayList<String>(existingFemaleFirstNames);
+            removedFemaleFirstNames.remove(string);
+
+            configFile.set(femaleFirstNameSelector, removedFemaleFirstNames);
+            plugin.saveConfig();
+            reload();
+            return true;
         } else if (typeString.equals(FAMILY_NAME_SURNAME_TYPE)) {
+            String surnameSelector = String.format("%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.SURNAMES_KEY);
 
+            List<String> existingSurnames = configFile.get(surnameSelector);
+            ArrayList<String> removedSurnames = = new ArrayList<String>(existingSurnames);
+            removedSurnames.remove(string);
+
+            configFile.set(surnameSelector, removedSurnames);
+            plugin.saveConfig();
+            reload();
+            return true;
         } else {
             return false;
         }
