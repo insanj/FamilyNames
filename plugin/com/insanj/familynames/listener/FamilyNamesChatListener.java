@@ -47,10 +47,6 @@ public class FamilyNamesChatListener implements Listener {
             return; // nothing configured
         }
 
-        if (plugin.config.getTooltip() == false) {
-            entry = new FamilyNamesConfig.PlayerEntry(entry.name, entry.gender, entry.firstName, entry.surname, null);
-        } 
-
         String msg = event.getMessage();
         for (Player recipient : event.getRecipients​()) {
             plugin.composer.sendFamilyNamesMessage(entry, recipient, msg);

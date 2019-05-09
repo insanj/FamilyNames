@@ -8,7 +8,7 @@ enabled: true
 debug: false 
 
 # enables tooltips on usernames when sending a message (default: shows original username on hover)
-tooltip: true
+show_username_on_hover: true
 
 # list of first names to use when creating a new Family Name for a player
 # list of surnames to use when creating a new Family Name for a player
@@ -38,7 +38,5 @@ family_name:
 # list of all current Family Names for players, including optional tooltip when hovering over name
 player:
     insanj:
-        gender: male
         first_name: Harry
         surname: Potter
-        tooltip: insanj

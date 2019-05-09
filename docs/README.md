@@ -60,43 +60,16 @@ simple rpg nicknames (bukkit 1.13.2)
 
 <br/>
 
-<h2>Commands</h2>
+<h2>Commands & Permissions</h2>
 
-| Command | Arguments | Description |
-| :---: | :---: | :---: |
-| `/family set <player_name> <family_name>` | `player_name` = name of a player currently logged into the server, `family_name` = string that represents the Family Name to use in chat (should already be composed of a first_name and surname before this point) | Sets the Family Name of a player |
-| `/family removep <player_name>` | `player_name` = name of a player | Removes the Family Name for the player |
-| `/family add <type> <name>` | `type` = `male_first_name`, `female_first_name`, or `surname`; `name` = name to add | Adds a Family Name to the config |
-| `/family remove <type> <name>` | `type` = `male_first_name`, `female_first_name`, or `surname`; `name` = name to remove | Removes a Family Name from the config |
+| Command | Permissions | Arguments | Description |
+| :---: | :--: | :---: | :---: |
+| `/family set [player_name] [family_name]` | `family.set` | `player_name` = name of a player currently logged into the server, `family_name` = string that represents the Family Name to use in chat (should already be composed of a first_name and surname before this point) | Sets the Family Name of a player |
+| `/family removep [player_name]` | `family.removep` | `player_name` = name of a player | Removes the Family Name for the player |
+| `/family add [type=male_first_name|female_first_name|surname] [value]` | `family.add` | `type` = `male_first_name`, `female_first_name`, or `surname`; `name` = name to add | Adds a Family Name to the config |
+| `/family remove [type=male_first_name|female_first_name|surname] [value]` | `family.remove` | `type` = `male_first_name`, `female_first_name`, or `surname`; `name` = name to remove | Removes a Family Name from the config |
 
-
-<br/>
-
-<h2>Permissions</h2>
-
-```
-    Family.set
-    Family.remove
-    Family.add
-    Family.removep
-    Family.all
-    Family.fset
-
-
-
-Family.set =gives perm for /family set <player> <Family name>
-
-Family.remove =gives perm for removing a family from config (used in game use)
-
-Family.add =gives permission for adding a family to config (used in game use)
-
-Family.removep =gives perm for removing a player from a family
-
-Family.all =gives permission to all commands
-
-Family.fset =gives permission to fset
-
-```
+> NOTE: Operators and `family.all` users will be able to run all commands.
 
 <br/>
 

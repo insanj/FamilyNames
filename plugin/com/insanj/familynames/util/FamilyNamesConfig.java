@@ -27,14 +27,14 @@ public class FamilyNamesConfig {
     // public const keys (used for permissions or elsewhere)
     public static final String ENABLED_KEY = "enabled";
     public static final String DEBUG_KEY = "debug";
-    public static final String TOOLTIP_KEY = "tooltip";
+    public static final String SHOW_USERNAME_ON_HOVER_KEY = "show_username_on_hover";
+
     public static final String FAMILY_NAMES_KEY = "family_name";
     public static final String FIRST_NAMES_KEY = "first_name";
     public static final String MALE_KEY = "male";
     public static final String FEMALE_KEY = "female";
     public static final String SURNAMES_KEY = "surname";
     public static final String PLAYERS_KEY = "player";
-    public static final String GENDER_KEY = "gender";
 
     // private const keys (used only internally, such as for commands)
     private final String FAMILY_NAME_MALE_FIRST_NAME_TYPE = "male_first_name";
@@ -44,7 +44,7 @@ public class FamilyNamesConfig {
     // private vars & constructor (use getters to get values from outside)
     private boolean enabledEntry;
     private boolean debugEntry;
-    private boolean tooltipEntry;
+    private boolean showUsernameOnHoverEntry;
 
     private List<String> maleFirstNameEntries;
     private List<String> femaleFirstNameEntries;
@@ -52,13 +52,11 @@ public class FamilyNamesConfig {
     private Map<String, PlayerEntry> playerEntries;
 
     public static class PlayerEntry {
-        public final String name, gender, firstName, surname, tooltip;
-        public PlayerEntry(String name, String gender, String firstName, String surname, String tooltip) {
+        public final String name, firstName, surname;
+        public PlayerEntry(String name, String firstName, String surname) {
             this.name = name;
-            this.gender = gender;
             this.firstName = firstName;
             this.surname = surname;
-            this.tooltip = tooltip;
 
             if (name == null || firstName == null || surname == null) {
                 FamilyNamesPlugin.warning("FamilyNames player needs to be saved with a name, first name, and surname! Not doing this is highly inadvisable.");
@@ -66,12 +64,7 @@ public class FamilyNamesConfig {
         }
 
         public static PlayerEntry fromPlayerMap(String name, Map<String, Object> map) {
-            String gender = null, firstName = null, surname = null, tooltip = null;
-
-            Object genderObj = map.get(FamilyNamesConfig.GENDER_KEY);
-            if (genderObj != null && genderObj instanceof String) {
-                gender = (String)genderObj;
-            }
+            String firstName = null, surname = null;
 
             Object firstNameObj = map.get(FamilyNamesConfig.FIRST_NAMES_KEY);
             if (firstNameObj != null && firstNameObj instanceof String) {
@@ -83,12 +76,7 @@ public class FamilyNamesConfig {
                 surname = (String)surnameObj;
             }
 
-            Object tooltipObj = map.get(FamilyNamesConfig.TOOLTIP_KEY);
-            if (tooltipObj != null && tooltipObj instanceof String) {
-                tooltip = (String)tooltipObj;
-            }
-
-            return new PlayerEntry(name, gender, firstName, surname, tooltip);
+            return new PlayerEntry(name, firstName, surname);
         }
     }
 
@@ -107,7 +95,7 @@ public class FamilyNamesConfig {
         FileConfiguration configFile = plugin.getConfig();
         enabledEntry = configFile.getBoolean(FamilyNamesConfig.ENABLED_KEY);
         debugEntry = configFile.getBoolean(FamilyNamesConfig.DEBUG_KEY);
-        tooltipEntry = configFile.getBoolean(FamilyNamesConfig.TOOLTIP_KEY);
+        showUsernameOnHoverEntry = configFile.getBoolean(FamilyNamesConfig.SHOW_USERNAME_ON_HOVER_KEY);
 
         String maleFirstNameConfigSectionPath = String.format("%s.%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.FIRST_NAMES_KEY, FamilyNamesConfig.MALE_KEY);
         maleFirstNameEntries = (List<String>)configFile.get(maleFirstNameConfigSectionPath);
@@ -146,8 +134,8 @@ public class FamilyNamesConfig {
         return debugEntry;
     }
 
-    public boolean getTooltip() {
-        return tooltipEntry;
+    public boolean getShowUsernameOnHover() {
+        return showUsernameOnHoverEntry;
     }
 
     public List<String> getFamilyMaleFirstNames() {
@@ -171,17 +159,11 @@ public class FamilyNamesConfig {
         String selectorForPlayer = String.format("%s.%s", FamilyNamesConfig.PLAYERS_KEY, playerEntry.name);   
         FileConfiguration configFile = plugin.getConfig();
 
-        String genderSelector = String.format("%s.%s", selectorForPlayer, FamilyNamesConfig.GENDER_KEY);
-        configFile.set(genderSelector, playerEntry.gender);
-
         String firstNameSelector = String.format("%s.%s", selectorForPlayer, FamilyNamesConfig.FIRST_NAMES_KEY);
         configFile.set(firstNameSelector, playerEntry.firstName);
 
         String surnameSelector = String.format("%s.%s", selectorForPlayer, FamilyNamesConfig.SURNAMES_KEY);
         configFile.set(surnameSelector, playerEntry.surname);
-
-        String tooltipSelector = String.format("%s.%s", selectorForPlayer, FamilyNamesConfig.TOOLTIP_KEY);
-        configFile.set(tooltipSelector, playerEntry.tooltip);
 
         plugin.saveConfig();
         reload();

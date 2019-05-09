@@ -22,6 +22,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.insanj.familynames.FamilyNamesPlugin;
 import com.insanj.familynames.util.FamilyNamesConfig;
+import com.insanj.familynames.util.FamilyNamesPermissions;
 
 public class FamilyNamesJoinListener implements Listener {
     private final FamilyNamesPlugin plugin;
@@ -42,6 +43,11 @@ public class FamilyNamesJoinListener implements Listener {
         if (entry != null) {
             plugin.info("Player with existing Family Names entry detected: " + player.toString());
             return; // player already setup
+        }
+
+        if (FamilyNamesPermissions.playerHasPermission(player, FamilyNamesPermissions.FAMILY_SET_KEY) == false) {
+            plugin.info("Not setting up Family Names for player because they do not have the family.set permission (or family.all, or being an operator).");
+            return;
         }
 
         plugin.composer.sendMessage("<FamilyNames>", player, "Welcome! Please click a gender:");

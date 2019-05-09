@@ -30,7 +30,7 @@ public class FamilyNamesPlugin extends JavaPlugin {
         config = new FamilyNamesConfig(this);
         config.reload();
 
-        composer = new FamilyNamesChatComposer();
+        composer = new FamilyNamesChatComposer(config);
 
         // commands
         executor = new FamilyNamesCommandExecutor(this);

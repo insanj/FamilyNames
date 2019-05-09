@@ -34,6 +34,11 @@ import com.insanj.familynames.util.FamilyNamesConfig;
 import com.insanj.familynames.util.FamilyNamesPermissions;
 
 public class FamilyNamesChatComposer {
+    private final FamilyNamesConfig config;
+    public FamilyNamesChatComposer(FamilyNamesConfig config) {
+        this.config = config;
+    }
+
     public void sendFamilyNamesMessage(FamilyNamesConfig.PlayerEntry sender, Player recipient, String message) {
         ArrayList messageJSON = new ArrayList();
         messageJSON.add("");
@@ -45,10 +50,10 @@ public class FamilyNamesChatComposer {
         fullnameJSON.put("color", "white");
 
         // hover over 0
-        if (sender.tooltip != null && sender.tooltip.length() > 0) {
+        if (config.getShowUsernameOnHover() == true && sender.name != null && sender.name.length() > 0) {
             HashMap hoverJSON = new HashMap();
             hoverJSON.put("action", "show_text");
-            hoverJSON.put("value", sender.tooltip);
+            hoverJSON.put("value", sender.name);
             fullnameJSON.put("hoverEvent", hoverJSON);
         }
 
