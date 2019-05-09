@@ -1,7 +1,5 @@
 package com.insanj.familynames.command;
 
-import com.insanj.familynames.FamilyNamesPlugin;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -17,11 +15,15 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 
+import com.insanj.familynames.FamilyNamesPlugin;
+import com.insanj.familynames.util.FamilyNamesPermissions;
+import com.insanj.familynames.util.FamilyNamesConfig;
+
 public class FamilyNamesCommandExecutor implements CommandExecutor {
     private final FamilyNamesPlugin plugin;
     private final String ERROR_NO_PERM = ChatColor.RED + "You do not have the required permission to run this FamilyNames command.";
 
-    public FamilyNamesCommandExecutor(Hover plugin) {
+    public FamilyNamesCommandExecutor(FamilyNamesPlugin plugin) {
         this.plugin = plugin;
     }
 
@@ -36,20 +38,22 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
 
         String familyCommand = args[0];
 
-        else if (FamilyNamesPermissions.senderHasPermission(sender, familyCommand) == false) {
+        if (FamilyNamesPermissions.senderHasPermission(sender, familyCommand) == false) {
             sender.sendMessage(ERROR_NO_PERM);
             return true;
         }
 
-        switch (FamilyNamesPermissions.permissionTypeFromString(familyCommand)) {
+        Player player = (Player)sender;
+        FamilyNamesPermissions.PermissionType type = FamilyNamesPermissions.permissionTypeFromString(familyCommand);
+        switch (type) {
             case SET:
-                return onFamilySetCommand(sender, args);
+                return onFamilySetCommand(player, args);
             case REMOVE:
-                return onFamilyRemoveCommand(sender, args);
+                return onFamilyRemoveCommand(player, args);
             case ADD:
-                return onFamilyAddCommand(sender, args);
+                return onFamilyAddCommand(player, args);
             case REMOVEP:
-                return onFamilyRemovePCommand(sender, args);
+                return onFamilyRemovePCommand(player, args);
             default:
             case ALL:
             case UNKNOWN:
@@ -57,7 +61,7 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
         }
     }
 
-    private boolean onFamilySetCommand(CommandSender sender, String[] args) {
+    private boolean onFamilySetCommand(Player sender, String[] args) {
         if (args.length < 3) {
             return false;
         }
@@ -71,7 +75,7 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
         String firstName = familyName[0];
         String surname = familyName[1];
 
-        FamilyNamesConfig.PlayerEntry entry = new PlayerEntry(sender.getName(), "", firstName, surname, "");
+        FamilyNamesConfig.PlayerEntry entry = new FamilyNamesConfig.PlayerEntry(sender.getName(), "", firstName, surname, "");
         plugin.config.addPlayerEntry(entry);
 
         plugin.composer.sendMessage("[FamilyNames]", sender, String.format("Welcome, %s_%s!", entry.firstName, entry.surname));
@@ -79,7 +83,7 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
         return true;
     }
 
-    private boolean onFamilyRemovePCommand(CommandSender sender, String[] args) {
+    private boolean onFamilyRemovePCommand(Player sender, String[] args) {
         if (args.length < 2) {
             return false;
         }
@@ -96,7 +100,7 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
         return true;
     }
 
-    private boolean onFamilyAddCommand(CommandSender sender, String[] args) {
+    private boolean onFamilyAddCommand(Player sender, String[] args) {
         if (args.length < 3) {
             return false;
         }
@@ -114,7 +118,7 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
         return true;
     }
 
-    private boolean onFamilyRemoveCommand(CommandSender sender, String[] args) {
+    private boolean onFamilyRemoveCommand(Player sender, String[] args) {
         if (args.length < 3) {
             return false;
         }

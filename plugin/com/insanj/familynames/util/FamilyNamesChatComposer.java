@@ -3,6 +3,8 @@ package com.insanj.familynames.util;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.List;
+import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,37 +28,39 @@ import net.minecraft.server.v1_13_R2.IChatBaseComponent.ChatSerializer;
 import net.minecraft.server.v1_13_R2.PacketPlayOutChat;
 import net.minecraft.server.v1_13_R2.PlayerConnection;
 
-import javax.json.JSONObject;
-import javax.json.JSONArray;
+import com.google.gson.Gson;
+
+import com.insanj.familynames.util.FamilyNamesConfig;
+import com.insanj.familynames.util.FamilyNamesPermissions;
 
 public class FamilyNamesChatComposer {
     public void sendFamilyNamesMessage(FamilyNamesConfig.PlayerEntry sender, Player recipient, String message) {
-        JSONArray messageJSON = new JSONArray();
+        ArrayList messageJSON = new ArrayList();
         messageJSON.add("");
 
         // 0
-        JSONObject fullnameJSON = new JSONObject();
-        String fullnameString = String.format("<%s_%s>", sender.first_name, sender.surname);
+        HashMap fullnameJSON = new HashMap();
+        String fullnameString = String.format("<%s_%s>", sender.firstName, sender.surname);
         fullnameJSON.put("text", fullnameString);
         fullnameJSON.put("color", "white");
         messageJSON.add(fullnameJSON);
 
         // 1
-        JSONObject startBracketJSON = new JSONObject();
+        HashMap startBracketJSON = new HashMap();
         String startBracket = "[";
-        startBracketJSON.put("text", composedPlayerNameText);
+        startBracketJSON.put("text", startBracket);
         startBracketJSON.put("color", "gray");
         messageJSON.add(startBracketJSON);
 
         // 2
-        JSONObject playerNameJSON = new JSONObject();
+        HashMap playerNameJSON = new HashMap();
         String composedPlayerNameText = String.format("%s", sender.surname);
         playerNameJSON.put("text", composedPlayerNameText);
         playerNameJSON.put("color", "dark_gray");
-
+        
         // hover over 2
         if (sender.tooltip != null) {
-            JSONObject hoverJSON = new JSONObject();
+            HashMap hoverJSON = new HashMap();
             hoverJSON.put("action", "show_text");
             hoverJSON.put("value", sender.tooltip);
             playerNameJSON.put("hoverEvent", hoverJSON);
@@ -70,26 +74,20 @@ public class FamilyNamesChatComposer {
         playerNameJSON.put("color", "gray");
 
         // 4
-        JSONObject messageBodyJSON = new JSONObject();
+        HashMap messageBodyJSON = new HashMap();
         messageBodyJSON.put("text", message);
 
-        if (clickEventCommandString != null) {
-            JSONObject clickJSON = new JSONObject();
-            clickJSON.put("action", "run_command");
-            clickJSON.put("value", String.format("/tell %s", sender.name));
-            messageBodyJSON.put("clickEvent", clickJSON);
-        }
+        HashMap clickJSON = new HashMap();
+        clickJSON.put("action", "run_command");
+        clickJSON.put("value", String.format("/tell %s", sender.name));
+        messageBodyJSON.put("clickEvent", clickJSON);
 
-        if (color != null) {
-            messageBodyJSON.put("color", color);
-        } else {
-            messageBodyJSON.put("color", "white");
-        }
-
+        messageBodyJSON.put("color", "white");
         messageJSON.add(messageBodyJSON);
 
         // send!
-        String jsonString = messageJSON.toString();
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(messageJSON);
         sendJsonMessage(recipient, jsonString);
     }
 
@@ -126,15 +124,15 @@ public class FamilyNamesChatComposer {
     }
 
     private String composeMessage(String playerName, String message, String playerHoverText, String clickEventCommandString, String color) {
-        JSONArray messageJSON = new JSONArray();
+        ArrayList messageJSON = new ArrayList();
         messageJSON.add("");
 
-        JSONObject playerNameJSON = new JSONObject();
+        HashMap playerNameJSON = new HashMap();
         String composedPlayerNameText = String.format("%s", playerName);
         playerNameJSON.put("text", composedPlayerNameText);
 
         if (playerHoverText != null) {
-            JSONObject hoverJSON = new JSONObject();
+            HashMap hoverJSON = new HashMap();
             hoverJSON.put("action", "show_text");
             hoverJSON.put("value", playerHoverText);
             playerNameJSON.put("hoverEvent", hoverJSON);
@@ -142,11 +140,11 @@ public class FamilyNamesChatComposer {
 
         messageJSON.add(playerNameJSON);
 
-        JSONObject messageBodyJSON = new JSONObject();
+        HashMap messageBodyJSON = new HashMap();
         messageBodyJSON.put("text", message);
 
         if (clickEventCommandString != null) {
-            JSONObject clickJSON = new JSONObject();
+            HashMap clickJSON = new HashMap();
             clickJSON.put("action", "run_command");
             clickJSON.put("value", clickEventCommandString);
             messageBodyJSON.put("clickEvent", clickJSON);
@@ -158,7 +156,8 @@ public class FamilyNamesChatComposer {
 
         messageJSON.add(messageBodyJSON);
 
-        String jsonString = messageJSON.toString();
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(messageJSON);
 
         //String jsonString = "[\"\", {\"text\":\"" + playerName + "\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":\"" + hoverText + "\"}}, {\"text\":\"" + message + "\"}]";
         return jsonString;

@@ -1,1 +1,6 @@
+
+
 *.jar
+server/
+build/
+external/

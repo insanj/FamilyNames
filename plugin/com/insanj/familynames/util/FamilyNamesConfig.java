@@ -3,6 +3,9 @@ package com.insanj.familynames.util;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Random;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,6 +20,8 @@ import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.file.FileConfiguration;
+
+import com.insanj.familynames.FamilyNamesPlugin;
 
 public class FamilyNamesConfig {
     // public const keys (used for permissions or elsewhere)
@@ -46,9 +51,9 @@ public class FamilyNamesConfig {
     private List<String> surnameEntries;
     private Map<String, PlayerEntry> playerEntries;
 
-    class PlayerEntry {
+    public static class PlayerEntry {
         public final String name, gender, firstName, surname, tooltip;
-        public PlayerEntry(String name, String gender, String firstName, String familyNameSurname, String tooltip) {
+        public PlayerEntry(String name, String gender, String firstName, String surname, String tooltip) {
             this.name = name;
             this.gender = gender;
             this.firstName = firstName;
@@ -79,16 +84,16 @@ public class FamilyNamesConfig {
         tooltipEntry = configFile.getBoolean(FamilyNamesConfig.TOOLTIP_KEY);
 
         String maleFirstNameConfigSectionPath = String.format("%s.%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.FIRST_NAMES_KEY, FamilyNamesConfig.MALE_KEY);
-        maleFirstNameEntries = configFile.getConfigurationSection(maleFirstNameConfigSectionPath).getValues(true);
+        maleFirstNameEntries = (List<String>)configFile.get(maleFirstNameConfigSectionPath);
 
         String femaleFirstNameConfigSectionPath = String.format("%s.%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.FIRST_NAMES_KEY, FamilyNamesConfig.FEMALE_KEY);
-        femaleFirstNameEntries = configFile.getConfigurationSection(femaleFirstNameConfigSectionPath).getValues(true);
+        femaleFirstNameEntries = (List<String>)configFile.get(femaleFirstNameConfigSectionPath);
 
         String surnameConfigSectionPath = String.format("%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.SURNAMES_KEY);
-        surnameEntries = configFile.getConfigurationSection(surnameConfigSectionPath).getValues(true);
+        surnameEntries = (List<String>)configFile.get(surnameConfigSectionPath);
 
         ConfigurationSection playersSection = configFile.getConfigurationSection(FamilyNamesConfig.PLAYERS_KEY);
-        HashMap<PlayerEntry> players = new HashMap<PlayerEntry>();
+        HashMap<String, PlayerEntry> players = new HashMap<String, PlayerEntry>();
         if (playersSection != null) {
             Map<String,Object> playersSectionMap = (Map<String, Object>)playersSection.getValues(true);
 
@@ -166,17 +171,17 @@ public class FamilyNamesConfig {
         return true;
     }
 
-    public boolean addFamilyName(String type, String string) { // -onFamilyAddCommand
+    public boolean addFamilyName(String typeString, String string) { // -onFamilyAddCommand
         FileConfiguration configFile = plugin.getConfig();
 
         if (typeString.equals(FAMILY_NAME_MALE_FIRST_NAME_TYPE)) {
             String maleFirstNameSelector = String.format("%s.%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.FIRST_NAMES_KEY, FamilyNamesConfig.MALE_KEY);
 
-            List<String> existingMaleFirstNames = configFile.get(maleFirstNameSelector);
+            List<String> existingMaleFirstNames = (List<String>) configFile.get(maleFirstNameSelector);
             if (existingMaleFirstNames == null) {
                 existingMaleFirstNames = new ArrayList<String>();
             }
-            ArrayList<String> addedMaleFirstNames = = new ArrayList<String>(existingMaleFirstNames);
+            ArrayList<String> addedMaleFirstNames = new ArrayList<String>(existingMaleFirstNames);
             addedMaleFirstNames.add(string);
 
             configFile.set(maleFirstNameSelector, addedMaleFirstNames);
@@ -186,7 +191,7 @@ public class FamilyNamesConfig {
         } else if (typeString.equals(FAMILY_NAME_FEMALE_FIRST_NAME_TYPE)) {
             String femaleFirstNameSelector = String.format("%s.%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.FIRST_NAMES_KEY, FamilyNamesConfig.FEMALE_KEY);
 
-            List<String> existingFemaleFirstNames = configFile.get(femaleFirstNameSelector);
+            List<String> existingFemaleFirstNames = (List<String>) configFile.get(femaleFirstNameSelector);
             if (existingFemaleFirstNames == null) {
                 existingFemaleFirstNames = new ArrayList<String>();
             }
@@ -200,11 +205,11 @@ public class FamilyNamesConfig {
         } else if (typeString.equals(FAMILY_NAME_SURNAME_TYPE)) {
             String surnameSelector = String.format("%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.SURNAMES_KEY);
 
-            List<String> existingSurnames = configFile.get(surnameSelector);
+            List<String> existingSurnames = (List<String>) configFile.get(surnameSelector);
             if (existingSurnames == null) {
                 existingSurnames = new ArrayList<String>();
             }
-            ArrayList<String> addedSurnames = = new ArrayList<String>(existingSurnames);
+            ArrayList<String> addedSurnames = new ArrayList<String>(existingSurnames);
             addedSurnames.add(string);
 
             configFile.set(surnameSelector, addedSurnames);
@@ -216,18 +221,18 @@ public class FamilyNamesConfig {
         }
     }
 
-    public void removeFamilyName(String type, String string) { // -onFamilyRemoveCommand
+    public boolean removeFamilyName(String typeString, String string) { // -onFamilyRemoveCommand
         FileConfiguration configFile = plugin.getConfig();
 
         if (typeString.equals(FAMILY_NAME_MALE_FIRST_NAME_TYPE)) {
             String maleFirstNameSelector = String.format("%s.%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.FIRST_NAMES_KEY, FamilyNamesConfig.MALE_KEY);
 
-            List<String> existingMaleFirstNames = configFile.get(maleFirstNameSelector);
+            List<String> existingMaleFirstNames = (List<String>) configFile.get(maleFirstNameSelector);
             if (existingMaleFirstNames == null || existingMaleFirstNames.contains(string) == false) {
                 return false;
             }
 
-            ArrayList<String> removedMaleFirstNames = = new ArrayList<String>(existingMaleFirstNames);
+            ArrayList<String> removedMaleFirstNames = new ArrayList<String>(existingMaleFirstNames);
             removedMaleFirstNames.remove(string);
 
             configFile.set(maleFirstNameSelector, removedMaleFirstNames);
@@ -237,7 +242,7 @@ public class FamilyNamesConfig {
         } else if (typeString.equals(FAMILY_NAME_FEMALE_FIRST_NAME_TYPE)) {
             String femaleFirstNameSelector = String.format("%s.%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.FIRST_NAMES_KEY, FamilyNamesConfig.FEMALE_KEY);
 
-            List<String> existingFemaleFirstNames = configFile.get(femaleFirstNameSelector);
+            List<String> existingFemaleFirstNames = (List<String>) configFile.get(femaleFirstNameSelector);
             if (existingFemaleFirstNames == null || existingFemaleFirstNames.contains(string) == false) {
                 return false;
             }
@@ -252,12 +257,12 @@ public class FamilyNamesConfig {
         } else if (typeString.equals(FAMILY_NAME_SURNAME_TYPE)) {
             String surnameSelector = String.format("%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.SURNAMES_KEY);
 
-            List<String> existingSurnames = configFile.get(surnameSelector);
+            List<String> existingSurnames = (List<String>) configFile.get(surnameSelector);
             if (existingSurnames == null || existingSurnames.contains(string) == false) {
                 return false;
             }
 
-            ArrayList<String> removedSurnames = = new ArrayList<String>(existingSurnames);
+            ArrayList<String> removedSurnames = new ArrayList<String>(existingSurnames);
             removedSurnames.remove(string);
 
             configFile.set(surnameSelector, removedSurnames);
@@ -273,12 +278,12 @@ public class FamilyNamesConfig {
     // convenience rando menthods
     public int random(int min, int max) {
         Random r = new Random();
-        return rand.nextInt((max - min) + 1) + min;
+        return r.nextInt((max - min) + 1) + min;
     }
 
     public String getRandomMaleFirstName() {
         List<String> maleFirstNames = getFamilyMaleFirstNames();
-        int randomMaleIdx = Math.random(0, maleFirstNames.size()-1);
+        int randomMaleIdx = random(0, maleFirstNames.size()-1);
         return maleFirstNames.get(randomMaleIdx);
     }
 

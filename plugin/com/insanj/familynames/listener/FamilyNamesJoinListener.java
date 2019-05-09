@@ -20,10 +20,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import com.insanj.familynames.FamilyNamesPlugin;
+import com.insanj.familynames.util.FamilyNamesConfig;
+
 public class FamilyNamesJoinListener implements Listener {
     private final FamilyNamesPlugin plugin;
 
-    public FamilyNamesLoginListener(FamilyNamesPlugin plugin) {
+    public FamilyNamesJoinListener(FamilyNamesPlugin plugin) {
         this.plugin = plugin;
     }
     
@@ -34,7 +37,7 @@ public class FamilyNamesJoinListener implements Listener {
         }
 
         Player player = event.getPlayer();
-        Map entry = plugin.config.getPlayerEntry(player.getName());
+        FamilyNamesConfig.PlayerEntry entry = plugin.config.getPlayerEntry(player.getName());
         if (entry != null) {
             return; // player already setup
         }

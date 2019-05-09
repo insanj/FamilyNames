@@ -1,3 +1,6 @@
+
+
+
 package com.insanj.familynames.listener;
 
 import java.util.Map;
@@ -20,6 +23,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import com.insanj.familynames.FamilyNamesPlugin;
+import com.insanj.familynames.util.FamilyNamesConfig;
+
 public class FamilyNamesChatListener implements Listener {
     private final FamilyNamesPlugin plugin;
 
@@ -34,15 +40,15 @@ public class FamilyNamesChatListener implements Listener {
         }
 
         Player player = event.getPlayer();
-        PlayerEntry entry = plugin.config.getPlayerEntry(player);
+        FamilyNamesConfig.PlayerEntry entry = plugin.config.getPlayerEntry(player.getName());
         if (entry == null) {
             return; // nothing configured
         }
 
         if (plugin.config.getTooltip() == false) {
-            entry.tooltip = null;
-        }
-        
+            entry = new FamilyNamesConfig.PlayerEntry(entry.name, entry.gender, entry.firstName, entry.surname, null);
+        } 
+
         String msg = event.getMessage();
         for (Player recipient : event.getRecipients​()) {
             plugin.composer.sendFamilyNamesMessage(entry, recipient, msg);
