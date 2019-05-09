@@ -33,12 +33,14 @@ public class FamilyNamesJoinListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
     public void onPlayerJoinEvent(PlayerJoinEvent event) {
         if (plugin.config.getEnabled() == false) {
+            plugin.info("Detected player join, but we are disabled so suppressing any action.");
             return; // disabled in config
         }
 
         Player player = event.getPlayer();
         FamilyNamesConfig.PlayerEntry entry = plugin.config.getPlayerEntry(player.getName());
         if (entry != null) {
+            plugin.info("Player with existing Family Names entry detected: " + player.toString());
             return; // player already setup
         }
 
@@ -53,5 +55,7 @@ public class FamilyNamesJoinListener implements Listener {
 
         String femaleClickResultCmd = String.format("family set %s %s_%s", player.getName(), randomFemaleFirstName, randomSurname);
         plugin.composer.sendMessage("[FamilyNames]", player, "[FEMALE]", null, femaleClickResultCmd, "light_purple");
+
+        plugin.info("Finished querying new player for Family Names gender, will have to wait for click...");
     }
 }

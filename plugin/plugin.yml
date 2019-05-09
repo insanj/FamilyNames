@@ -8,7 +8,12 @@ version: 0.1.0
 api-version: 1.13
 commands:
   family:
-    description: Base command, not used.
+    description: Base command, not used for anything.
+    usage: |
+              /family remove <family_name>
+              /family set <player> <family_name>
+              /family add <family_name>
+              /family removep <player>
   family remove:
     description: Removes a family from config
     usage: |
@@ -25,10 +30,6 @@ commands:
     description: Removes a player from a family so they don't have one unless it is set this means they won’t have a suffix and it is removed so they only have their standard Minecraft username
     usage: |
              /family removep <player>
-  family fset:
-    description: Sets first and last name
-    usage: |
-             /family fset <player> <first_name> <surname>
 permissions:
   family.set:
     description: Run /family set command
@@ -44,7 +45,4 @@ permissions:
     default: op
   family.all:
     description: Run all /family commands
-    default: op
-  family.fset:
-    description: Run /family fset command
     default: op

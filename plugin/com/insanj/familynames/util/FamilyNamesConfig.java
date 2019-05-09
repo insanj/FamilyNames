@@ -133,6 +133,8 @@ public class FamilyNamesConfig {
         }
 
         playerEntries = players;
+
+        plugin.info("Finished reloading config from config.yml!");
     }
 
     // public getters
@@ -183,6 +185,8 @@ public class FamilyNamesConfig {
 
         plugin.saveConfig();
         reload();
+
+        plugin.info("Added player entry: " + playerEntry.toString());
     }
 
     public boolean removePlayerEntry(String playerName) { // -onFamilyRemovePCommand
@@ -190,12 +194,15 @@ public class FamilyNamesConfig {
         FileConfiguration configFile = plugin.getConfig();
         boolean exists = configFile.get(selectorForPlayer) != null;
         if (exists == false) {
+            plugin.info("Unable to remove player entry for player which does not have an entry in the Family Names config: " + playerName);
             return false;
         }
+
         configFile.set(selectorForPlayer, null);
         plugin.saveConfig();
         reload();
 
+        plugin.info("Removed player entry: " + playerName);
         return true;
     }
 
@@ -209,12 +216,15 @@ public class FamilyNamesConfig {
             if (existingMaleFirstNames == null) {
                 existingMaleFirstNames = new ArrayList<String>();
             }
+
             ArrayList<String> addedMaleFirstNames = new ArrayList<String>(existingMaleFirstNames);
             addedMaleFirstNames.add(string);
 
             configFile.set(maleFirstNameSelector, addedMaleFirstNames);
             plugin.saveConfig();
             reload();
+
+            plugin.info("Adding Family Name entry for Male First Name: " + string);
             return true;
         } else if (typeString.equals(FAMILY_NAME_FEMALE_FIRST_NAME_TYPE)) {
             String femaleFirstNameSelector = String.format("%s.%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.FIRST_NAMES_KEY, FamilyNamesConfig.FEMALE_KEY);
@@ -223,12 +233,15 @@ public class FamilyNamesConfig {
             if (existingFemaleFirstNames == null) {
                 existingFemaleFirstNames = new ArrayList<String>();
             }
+
             ArrayList<String> addedFemaleFirstNames = new ArrayList<String>(existingFemaleFirstNames);
             addedFemaleFirstNames.add(string);
 
             configFile.set(femaleFirstNameSelector, addedFemaleFirstNames);
             plugin.saveConfig();
             reload();
+
+            plugin.info("Adding Family Name entry for Female First Name: " + string);
             return true;
         } else if (typeString.equals(FAMILY_NAME_SURNAME_TYPE)) {
             String surnameSelector = String.format("%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.SURNAMES_KEY);
@@ -237,14 +250,18 @@ public class FamilyNamesConfig {
             if (existingSurnames == null) {
                 existingSurnames = new ArrayList<String>();
             }
+
             ArrayList<String> addedSurnames = new ArrayList<String>(existingSurnames);
             addedSurnames.add(string);
 
             configFile.set(surnameSelector, addedSurnames);
             plugin.saveConfig();
             reload();
+
+            plugin.info("Adding Family Name entry for Surname: " + string);
             return true;
         } else {
+            plugin.info("Unable to add Family Name entry, needs proper type (male_first_name, female_first_name, or surname)");
             return false;
         }
     }
@@ -257,6 +274,7 @@ public class FamilyNamesConfig {
 
             List<String> existingMaleFirstNames = (List<String>) configFile.get(maleFirstNameSelector);
             if (existingMaleFirstNames == null || existingMaleFirstNames.contains(string) == false) {
+                plugin.info("Unable to remove male first name entry which does not exist in the Family Names config: " + string);
                 return false;
             }
 
@@ -266,12 +284,15 @@ public class FamilyNamesConfig {
             configFile.set(maleFirstNameSelector, removedMaleFirstNames);
             plugin.saveConfig();
             reload();
+
+            plugin.info("Removing Family Name entry for Male First Name: " + string);
             return true;
         } else if (typeString.equals(FAMILY_NAME_FEMALE_FIRST_NAME_TYPE)) {
             String femaleFirstNameSelector = String.format("%s.%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.FIRST_NAMES_KEY, FamilyNamesConfig.FEMALE_KEY);
 
             List<String> existingFemaleFirstNames = (List<String>) configFile.get(femaleFirstNameSelector);
             if (existingFemaleFirstNames == null || existingFemaleFirstNames.contains(string) == false) {
+                plugin.info("Unable to remove female first name entry which does not exist in the Family Names config: " + string);
                 return false;
             }
 
@@ -281,12 +302,15 @@ public class FamilyNamesConfig {
             configFile.set(femaleFirstNameSelector, removedFemaleFirstNames);
             plugin.saveConfig();
             reload();
+
+            plugin.info("Removing Family Name entry for Felame First Name: " + string);
             return true;
         } else if (typeString.equals(FAMILY_NAME_SURNAME_TYPE)) {
             String surnameSelector = String.format("%s.%s", FamilyNamesConfig.FAMILY_NAMES_KEY, FamilyNamesConfig.SURNAMES_KEY);
 
             List<String> existingSurnames = (List<String>) configFile.get(surnameSelector);
             if (existingSurnames == null || existingSurnames.contains(string) == false) {
+                plugin.info("Unable to remove surname entry which does not exist in the Family Names config: " + string);
                 return false;
             }
 
@@ -296,8 +320,11 @@ public class FamilyNamesConfig {
             configFile.set(surnameSelector, removedSurnames);
             plugin.saveConfig();
             reload();
+
+            plugin.info("Removing Family Name entry for Surname: " + string);
             return true;
         } else {
+            plugin.info("Unable to remove Family Name entry, needs proper type (male_first_name, female_first_name, or surname)");
             return false;
         }
     }

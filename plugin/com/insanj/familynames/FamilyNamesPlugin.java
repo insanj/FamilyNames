@@ -42,15 +42,17 @@ public class FamilyNamesPlugin extends JavaPlugin {
 
         chatListener = new FamilyNamesChatListener(this);
         Bukkit.getServer().getPluginManager().registerEvents(chatListener, this); 
+
+        info("Finished booting up! Disable these log messages in the /plugins/FamilyNames/config.yml file :)");
     }
 
     public void info(String s) {
         if (config.getDebug() == true) {
-            Bukkit.getLogger().info(s);
+            getLogger().info(String.format("%s", s));
         }
     }
 
     public static void warning(String s) {
-        Bukkit.getLogger().warning(s);
+        Bukkit.getLogger().warning(String.format("[FamilyNames] %s", s));
     }
 }

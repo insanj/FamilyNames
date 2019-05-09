@@ -29,10 +29,12 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (plugin.config.getEnabled() == false) {
+            plugin.info("Ignoring command because we are disabled in config file!");
             return false; // disabled in config
         }
 
-        if (args.length != 1) {
+        if (args.length < 1) {
+            plugin.info("Unable to process /family because no arguments given (/family does not do anything by itself).");
             return false;
         }
 
@@ -63,12 +65,14 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
 
     private boolean onFamilySetCommand(Player sender, String[] args) {
         if (args.length < 3) {
+            plugin.info("Unable to run /family set because fewer than 3 arguments were given.");
             return false;
         }
 
         String playerName = args[1];
         String[] familyName = args[2].split("_");
         if (familyName == null || familyName.length != 2) {
+            plugin.info("Unable to set Family Name of player which does not follow the format 'first_last'!");
             return false;
         }
 
@@ -85,6 +89,7 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
 
     private boolean onFamilyRemovePCommand(Player sender, String[] args) {
         if (args.length < 2) {
+            plugin.info("Unable to run /family removep because fewer than 2 arguments were given.");
             return false;
         }
 
@@ -102,6 +107,7 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
 
     private boolean onFamilyAddCommand(Player sender, String[] args) {
         if (args.length < 3) {
+            plugin.info("Unable to run /family add because fewer than 3 arguments were given.");
             return false;
         }
 
@@ -120,6 +126,7 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
 
     private boolean onFamilyRemoveCommand(Player sender, String[] args) {
         if (args.length < 3) {
+            plugin.info("Unable to run /family remove because fewer than 3 arguments were given.");
             return false;
         }
 

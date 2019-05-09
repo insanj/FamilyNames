@@ -36,12 +36,14 @@ public class FamilyNamesChatListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
     public void onAsyncPlayerChatEvent(AsyncPlayerChatEvent event) {
         if (plugin.config.getEnabled() == false) {
+            plugin.info("Disabled in config, so not overriding or doing anything with chat message.");
             return; // disabled in config
         }
 
         Player player = event.getPlayer();
         FamilyNamesConfig.PlayerEntry entry = plugin.config.getPlayerEntry(player.getName());
         if (entry == null) {
+            plugin.info("Nothing configured for user sending message: " + player.toString());
             return; // nothing configured
         }
 
@@ -55,6 +57,7 @@ public class FamilyNamesChatListener implements Listener {
         }
 
         event.setCancelled(true);
+        plugin.info("Finished sending Family Names chat message with PlayerEntry: " + entry.toString());
     }
 
 }
