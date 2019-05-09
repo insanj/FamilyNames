@@ -19,17 +19,22 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class FamilyNamesConfig {
-    // const keys
-    static final String ENABLED_KEY = "enabled";
-    static final String DEBUG_KEY = "debug";
-    static final String TOOLTIP_KEY = "tooltip";
-    static final String FAMILY_NAMES_KEY = "family_name";
-    static final String FIRST_NAMES_KEY = "first_name";
-    static final String MALE_KEY = "male";
-    static final String FEMALE_KEY = "female";
-    static final String SURNAMES_KEY = "surname";
-    static final String PLAYERS_KEY = "player";
-    static final String GENDER_KEY = "gender";
+    // public const keys (used for permissions or elsewhere)
+    public static final String ENABLED_KEY = "enabled";
+    public static final String DEBUG_KEY = "debug";
+    public static final String TOOLTIP_KEY = "tooltip";
+    public static final String FAMILY_NAMES_KEY = "family_name";
+    public static final String FIRST_NAMES_KEY = "first_name";
+    public static final String MALE_KEY = "male";
+    public static final String FEMALE_KEY = "female";
+    public static final String SURNAMES_KEY = "surname";
+    public static final String PLAYERS_KEY = "player";
+    public static final String GENDER_KEY = "gender";
+
+    // private const keys (used only internally, such as for commands)
+    private final String FAMILY_NAME_MALE_FIRST_NAME_TYPE = "male_first_name";
+    private final String FAMILY_NAME_FEMALE_FIRST_NAME_TYPE = "female_first_name";
+    private final String FAMILY_NAME_SURNAME_TYPE = "surname";
 
     // private vars & constructor (use getters to get values from outside)
     private boolean enabledEntry;
@@ -122,7 +127,8 @@ public class FamilyNamesConfig {
         return playerEntries.get(playerName);
     }
 
-    public void addPlayerEntry(PlayerEntry playerEntry) {
+    // player command funcs
+    public void addPlayerEntry(PlayerEntry playerEntry) { // -onFamilySetCommand
         configFile.getConfigurationSection().
 
         String selectorForPlayer = String.format("%s.%s", FamilyNamesConfig.PLAYERS_KEY, playerEntry.name);   
@@ -144,6 +150,35 @@ public class FamilyNamesConfig {
         reload();
     }
 
+    public boolean removePlayerEntry(String playerName) { // -onFamilyRemovePCommand
+
+    }
+
+    public boolean addFamilyName(String type, String string) { // -onFamilyAddCommand
+        if (typeString.equals(FAMILY_NAME_MALE_FIRST_NAME_TYPE)) {
+            
+        } else if (typeString.equals(FAMILY_NAME_FEMALE_FIRST_NAME_TYPE)) {
+
+        } else if (typeString.equals(FAMILY_NAME_SURNAME_TYPE)) {
+
+        } else {
+            return false;
+        }
+    }
+
+    public void removeFamilyName(String type, String string) { // -onFamilyRemoveCommand
+        if (typeString.equals(FAMILY_NAME_MALE_FIRST_NAME_TYPE)) {
+
+        } else if (typeString.equals(FAMILY_NAME_FEMALE_FIRST_NAME_TYPE)) {
+
+        } else if (typeString.equals(FAMILY_NAME_SURNAME_TYPE)) {
+
+        } else {
+            return false;
+        }
+    }
+
+    // player join funcs
     // convenience rando menthods
     public int random(int min, int max) {
         Random r = new Random();

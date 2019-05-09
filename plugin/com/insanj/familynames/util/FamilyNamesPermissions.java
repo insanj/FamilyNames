@@ -58,21 +58,21 @@ public class FamilyNamesPermissions {
         if (sender.isOp() == true) {
             return true;
         }
+
+        if (sender.hasPermission(String.format("family.%s", FAMILY_ALL_KEY)) == true) {
+            return true;
+        }
         
         PermissionType type = permissionTypeFromString(arg);
         switch (type) {
             case SET:
-                return sender.hasPermission(String.format("family.%s",FAMILY_SET_KEY)) == true;
             case REMOVE:
-                return sender.hasPermission(String.format("family.%s",FAMILY_REMOVE_KEY)) == true;
             case ADD:
-                return sender.hasPermission(String.format("family.%s",FAMILY_ADD_KEY)) == true;
             case REMOVEP:
-                return sender.hasPermission(String.format("family.%s",FAMILY_REMOVEP_KEY)) == true;
+                return sender.hasPermission(String.format("family.%s", arg));
             case ALL:
-                return true;
-            default:
             case UNKNOWN:
+            default:
                 return false;
         }
     }

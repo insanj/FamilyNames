@@ -57,12 +57,8 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
         }
     }
 
-    private boolean onFamilyRemoveCommand(CommandSender sender, String[] args) {
-        return true;
-    }
-
     private boolean onFamilySetCommand(CommandSender sender, String[] args) {
-        if (args < 3) {
+        if (args.length < 3) {
             return false;
         }
 
@@ -80,11 +76,56 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
         return true;
     }
 
-    private boolean onFamilyAddCommand(CommandSender sender, String[] args) {
+    private boolean onFamilyRemovePCommand(CommandSender sender, String[] args) {
+        if (args.length < 2) {
+            return false;
+        }
+
+        String playerName = args[1];
+        boolean result = plugin.config.removePlayerEntry(playerName);
+
+        if (result == true) {
+            plugin.composer.sendMessage("[FamilyNames]", sender, String.format("%s removed from Family Names config!", playerName));
+        } else {
+            plugin.composer.sendMessage("[FamilyNames]", sender, String.format("Error: unable to remove %s from Family Names config", playerName));
+        }
+
         return true;
     }
 
-    private boolean onFamilyRemovePCommand(CommandSender sender, String[] args) {
+    private boolean onFamilyAddCommand(CommandSender sender, String[] args) {
+        if (args.length < 3) {
+            return false;
+        }
+
+        String typeString = args[1];
+        String string = args[2];
+        boolean result = plugin.config.addFamilyName(typeString, string);
+
+        if (result == true) {
+            plugin.composer.sendMessage("[FamilyNames]", sender, String.format("%s added to Family Names config for %s!", string, typeString));
+        } else {
+            plugin.composer.sendMessage("[FamilyNames]", sender, String.format("Error: unable to add %s to Family Names config for %s", string, typeString));
+        }
+
+        return true;
+    }
+
+    private boolean onFamilyRemoveCommand(CommandSender sender, String[] args) {
+        if (args.length < 3) {
+            return false;
+        }
+
+        String typeString = args[1];
+        String string = args[2];
+        boolean result = plugin.config.removeFamilyName(typeString, string);
+
+        if (result == true) {
+            plugin.composer.sendMessage("[FamilyNames]", sender, String.format("%s removed from Family Names config for %s!", string, typeString));
+        } else {
+            plugin.composer.sendMessage("[FamilyNames]", sender, String.format("Error: unable to remove %s to Family Names config for %s", string, typeString));
+        }
+
         return true;
     }
 }
