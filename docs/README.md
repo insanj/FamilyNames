@@ -1,9 +1,13 @@
-<h3 align="center">
+<h1 align="center">
 🏰
-<br/>
+</h1>
+
+<h2 align="center">
 FamilyNames
-<br/>
- simple rpg nicknames (bukkit 1.13.2)
+</h2>
+
+<h3 align="center">
+simple rpg nicknames (bukkit 1.13.2)
 </h3>
 
 <p align="center">
@@ -38,16 +42,22 @@ FamilyNames
   </a>
 </p>
 
-<br/>
+<br/><br/>
 
-<img src="https://pbs.twimg.com/profile_images/1205959797/bukkit_400x400.png" width="50" height="50"><a href="https://bukkit.org/threads/familynames.478902/">See the original request on Bukkit Forums.</a>
+<p align="center">
+<img src="https://pbs.twimg.com/profile_images/1205959797/bukkit_400x400.png" width="50" height="50" >
+</p>
+
+<p align="center">
+<a href="https://bukkit.org/threads/familynames.478902/">See the original request on the Bukkit Forums!</a>
+</p>
 
 <br/>
 
 <h2>Commands</h2>
 
 | Command | Arguments | Description |
-| --- | --- |
+| :---: | :---: | :---: |
 | `/family set <player_name> <family_name>` | `player_name` = name of a player currently logged into the server, `family_name` = string that represents the Family Name to use in chat (should already be composed of a first_name and surname before this point) | Sets the Family Name of a player |
 | `/family removep <player_name>` | `player_name` = name of a player | Removes the Family Name for the player |
 | `/family add <type> <name>` | `type` = `male_first_name`, `female_first_name`, or `surname`; `name` = name to add | Adds a Family Name to the config |
@@ -99,9 +109,9 @@ me@insanj.com
 github.com/insanj
 ```
 
-
 <br/>
-<h2 align="center"><a href="https://github.com/insanj/familynames/blob/master/LICENSE">License</a></h2>
+
+<h2>License</h2>
 
 
 ```
