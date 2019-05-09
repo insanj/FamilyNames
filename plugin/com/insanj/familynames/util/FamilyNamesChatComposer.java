@@ -43,6 +43,15 @@ public class FamilyNamesChatComposer {
         String fullnameString = String.format("<%s_%s>", sender.firstName, sender.surname);
         fullnameJSON.put("text", fullnameString);
         fullnameJSON.put("color", "white");
+
+        // hover over 0
+        if (sender.tooltip != null && sender.tooltip.length() > 0) {
+            HashMap hoverJSON = new HashMap();
+            hoverJSON.put("action", "show_text");
+            hoverJSON.put("value", sender.tooltip);
+            fullnameJSON.put("hoverEvent", hoverJSON);
+        }
+
         messageJSON.add(fullnameJSON);
 
         // 1
@@ -57,21 +66,14 @@ public class FamilyNamesChatComposer {
         String composedPlayerNameText = String.format("%s", sender.surname);
         playerNameJSON.put("text", composedPlayerNameText);
         playerNameJSON.put("color", "dark_gray");
-        
-        // hover over 2
-        if (sender.tooltip != null) {
-            HashMap hoverJSON = new HashMap();
-            hoverJSON.put("action", "show_text");
-            hoverJSON.put("value", sender.tooltip);
-            playerNameJSON.put("hoverEvent", hoverJSON);
-        }
-
         messageJSON.add(playerNameJSON);
 
         // 3
-        String endBracket = "]";
-        playerNameJSON.put("text", composedPlayerNameText);
-        playerNameJSON.put("color", "gray");
+        HashMap endBracketJSON = new HashMap();
+        String endBracket = "] ";
+        endBracketJSON.put("text", endBracket);
+        endBracketJSON.put("color", "gray");
+        messageJSON.add(endBracketJSON);
 
         // 4
         HashMap messageBodyJSON = new HashMap();
@@ -141,7 +143,7 @@ public class FamilyNamesChatComposer {
         messageJSON.add(playerNameJSON);
 
         HashMap messageBodyJSON = new HashMap();
-        messageBodyJSON.put("text", message);
+        messageBodyJSON.put("text", String.format(" %s", message));
 
         if (clickEventCommandString != null) {
             HashMap clickJSON = new HashMap();

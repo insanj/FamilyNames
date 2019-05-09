@@ -44,17 +44,17 @@ public class FamilyNamesJoinListener implements Listener {
             return; // player already setup
         }
 
-        plugin.composer.sendMessage("[FamilyNames]", player, "Welcome! Please click a gender:");
+        plugin.composer.sendMessage("<FamilyNames>", player, "Welcome! Please click a gender:");
 
         String randomMaleFirstName = plugin.config.getRandomMaleFirstName();
         String randomFemaleFirstName = plugin.config.getRandomFemaleFirstName();
         String randomSurname = plugin.config.getRandomSurname();
 
-        String maleClickResultCmd = String.format("family set %s %s_%s", player.getName(), randomMaleFirstName, randomSurname);
-        plugin.composer.sendMessage("[FamilyNames]", player, "[MALE]", null, maleClickResultCmd, "aqua");
+        String maleClickResultCmd = String.format("/family set %s %s_%s", player.getName(), randomMaleFirstName, randomSurname);
+        plugin.composer.sendMessage("- ", player, "[MALE]", null, maleClickResultCmd, "aqua");
 
-        String femaleClickResultCmd = String.format("family set %s %s_%s", player.getName(), randomFemaleFirstName, randomSurname);
-        plugin.composer.sendMessage("[FamilyNames]", player, "[FEMALE]", null, femaleClickResultCmd, "light_purple");
+        String femaleClickResultCmd = String.format("/family set %s %s_%s", player.getName(), randomFemaleFirstName, randomSurname);
+        plugin.composer.sendMessage("- ", player, "[FEMALE]", null, femaleClickResultCmd, "light_purple");
 
         plugin.info("Finished querying new player for Family Names gender, will have to wait for click...");
     }

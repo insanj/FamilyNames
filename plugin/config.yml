@@ -5,7 +5,7 @@
 enabled: true
 
 # enables debug messages in the system log
-debug: true 
+debug: false 
 
 # enables tooltips on usernames when sending a message (default: shows original username on hover)
 tooltip: true
