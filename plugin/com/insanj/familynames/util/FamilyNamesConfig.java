@@ -64,6 +64,32 @@ public class FamilyNamesConfig {
                 FamilyNamesPlugin.warning("FamilyNames player needs to be saved with a name, first name, and surname! Not doing this is highly inadvisable.");
             }
         }
+
+        public static PlayerEntry fromPlayerMap(String name, Map<String, Object> map) {
+            String gender = null, firstName = null, surname = null, tooltip = null;
+
+            Object genderObj = map.get(FamilyNamesConfig.GENDER_KEY);
+            if (genderObj != null && genderObj instanceof String) {
+                gender = (String)genderObj;
+            }
+
+            Object firstNameObj = map.get(FamilyNamesConfig.FIRST_NAMES_KEY);
+            if (firstNameObj != null && firstNameObj instanceof String) {
+                firstName = (String)firstNameObj;
+            }
+
+            Object surnameObj = map.get(FamilyNamesConfig.SURNAMES_KEY);
+            if (surnameObj != null && surnameObj instanceof String) {
+                surname = (String)surnameObj;
+            }
+
+            Object tooltipObj = map.get(FamilyNamesConfig.TOOLTIP_KEY);
+            if (tooltipObj != null && tooltipObj instanceof String) {
+                tooltip = (String)tooltipObj;
+            }
+
+            return new PlayerEntry(name, gender, firstName, surname, tooltip);
+        }
     }
 
     // util vars
@@ -95,11 +121,13 @@ public class FamilyNamesConfig {
         ConfigurationSection playersSection = configFile.getConfigurationSection(FamilyNamesConfig.PLAYERS_KEY);
         HashMap<String, PlayerEntry> players = new HashMap<String, PlayerEntry>();
         if (playersSection != null) {
-            Map<String,Object> playersSectionMap = (Map<String, Object>)playersSection.getValues(true);
+            Map<String,Object> playersSectionMap = (Map<String, Object>)playersSection.getValues(false);
 
             for (String name : playersSectionMap.keySet()) {
-                Map<String, String> playerMetaMap = (Map<String, String>)playersSectionMap.get(name);
-                PlayerEntry entry = new PlayerEntry(name, playerMetaMap.get(FamilyNamesConfig.GENDER_KEY), playerMetaMap.get(FamilyNamesConfig.FIRST_NAMES_KEY), playerMetaMap.get(FamilyNamesConfig.SURNAMES_KEY), playerMetaMap.get(FamilyNamesConfig.TOOLTIP_KEY));
+                ConfigurationSection individualPlayerSection = configFile.getConfigurationSection(String.format("%s.%s", FamilyNamesConfig.PLAYERS_KEY, name));
+                Map<String, Object> playerMetaMap = (Map<String, Object>)individualPlayerSection.getValues(true);
+
+                PlayerEntry entry = PlayerEntry.fromPlayerMap(name, playerMetaMap);
                 players.put(name, entry);
             }
         }

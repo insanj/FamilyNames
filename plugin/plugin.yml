@@ -3,7 +3,7 @@ description: simple rpg nicknames (bukkit 1.13.2)
 author: insanj
 website: https://github.com/insanj/FamilyNames
 main: com.insanj.familynames.FamilyNamesPlugin
-prefix: [FamilyNames]
+prefix: FamilyNames
 version: 0.1.0
 api-version: 1.13
 commands:
@@ -30,9 +30,6 @@ commands:
     usage: |
              /family fset <player> <first_name> <surname>
 permissions:
-  family.*:
-    description: Run all /family commands
-    default: op
   family.set:
     description: Run /family set command
     default: op
