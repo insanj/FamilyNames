@@ -66,8 +66,8 @@ simple rpg nicknames (bukkit 1.13.2)
 | :---: | :--: | :---: | :---: |
 | `/family set [player_name] [family_name]` | `family.set` | `player_name` = name of a player currently logged into the server, `family_name` = string that represents the Family Name to use in chat (should already be composed of a first_name and surname before this point) | Sets the Family Name of a player |
 | `/family removep [player_name]` | `family.removep` | `player_name` = name of a player | Removes the Family Name for the player |
-| `/family add [type=male_first_name|female_first_name|surname] [value]` | `family.add` | `type` = `male_first_name`, `female_first_name`, or `surname`; `name` = name to add | Adds a Family Name to the config |
-| `/family remove [type=male_first_name|female_first_name|surname] [value]` | `family.remove` | `type` = `male_first_name`, `female_first_name`, or `surname`; `name` = name to remove | Removes a Family Name from the config |
+| `/family add [type] [value]` | `family.add` | `type` = `male_first_name`, `female_first_name`, or `surname`; `name` = name to add | Adds a Family Name to the config |
+| `/family remove [type] [value]` | `family.remove` | `type` = `male_first_name`, `female_first_name`, or `surname`; `name` = name to remove | Removes a Family Name from the config |
 
 > NOTE: Operators and `family.all` users will be able to run all commands.
 

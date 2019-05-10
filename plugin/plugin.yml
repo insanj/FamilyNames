@@ -15,19 +15,19 @@ commands:
               /family remove [male_first_name|female_first_name|surname] [value]
               /family add [male_first_name|female_first_name|surname] [value]
   family remove:
-    description: Removes a family from config
+    description: Removes a Family Name entry from config
     usage: |
              /family remove [male_first_name|female_first_name|surname] [value]
   family set:
-    description: Sets a player's family name
+    description: Sets a player's Family Name
     usage: |
              /family set [player_name] [family_name]
   family add:
-    description: Adds a family name to config
+    description: Adds a new Family Name entry to config
     usage: |
              /family add [male_first_name|female_first_name|surname] [value]
   family removep:
-    description: Removes a player's family name 
+    description: Removes a player's Family Name 
     usage: |
              /family removep [player_name]
 permissions:

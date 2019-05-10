@@ -83,7 +83,7 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
         FamilyNamesConfig.PlayerEntry entry = new FamilyNamesConfig.PlayerEntry(sender.getName(), firstName, surname);
         plugin.config.addPlayerEntry(entry);
 
-        plugin.composer.sendMessage("[FamilyNames]", sender, String.format("Welcome, %s_%s!", entry.firstName, entry.surname));
+        plugin.composer.sendMessage("<FamilyNames>", sender, String.format("Welcome, %s_%s!", entry.firstName, entry.surname));
 
         return true;
     }
@@ -98,9 +98,9 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
         boolean result = plugin.config.removePlayerEntry(playerName);
 
         if (result == true) {
-            plugin.composer.sendMessage("[FamilyNames]", sender, String.format("%s removed from Family Names config!", playerName));
+            plugin.composer.sendMessage("<FamilyNames>", sender, String.format("%s removed from Family Names config!", playerName));
         } else {
-            plugin.composer.sendMessage("[FamilyNames]", sender, String.format("Error: unable to remove %s from Family Names config", playerName));
+            plugin.composer.sendMessage("<FamilyNames>", sender, String.format("Error: unable to remove %s from Family Names config", playerName));
         }
 
         return true;
@@ -117,9 +117,9 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
         boolean result = plugin.config.addFamilyName(typeString, string);
 
         if (result == true) {
-            plugin.composer.sendMessage("[FamilyNames]", sender, String.format("%s added to Family Names config for %s!", string, typeString));
+            plugin.composer.sendMessage("<FamilyNames>", sender, String.format("%s added to Family Names config for %s!", string, typeString));
         } else {
-            plugin.composer.sendMessage("[FamilyNames]", sender, String.format("Error: unable to add %s to Family Names config for %s", string, typeString));
+            plugin.composer.sendMessage("<FamilyNames>", sender, String.format("Error: unable to add %s to Family Names config for %s", string, typeString));
         }
 
         return true;
@@ -136,9 +136,9 @@ public class FamilyNamesCommandExecutor implements CommandExecutor {
         boolean result = plugin.config.removeFamilyName(typeString, string);
 
         if (result == true) {
-            plugin.composer.sendMessage("[FamilyNames]", sender, String.format("%s removed from Family Names config for %s!", string, typeString));
+            plugin.composer.sendMessage("<FamilyNames>", sender, String.format("%s removed from Family Names config for %s!", string, typeString));
         } else {
-            plugin.composer.sendMessage("[FamilyNames]", sender, String.format("Error: unable to remove %s to Family Names config for %s", string, typeString));
+            plugin.composer.sendMessage("<FamilyNames>", sender, String.format("Error: unable to remove %s to Family Names config for %s", string, typeString));
         }
 
         return true;
